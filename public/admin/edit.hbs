@@ -1,0 +1,63 @@
+<h1>{{title}}</h1>
+<p>Add or edit a quote</p>
+
+<form>
+    <div class="form-group">
+        <label for="authorId">Author ID</label>
+        <input type="text" class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter Author ID" value={{data.authorId}}>
+        <input type="hidden" id="quoteId" value="{{data.quoteId}}" />
+        <small id="authorIdHelp" class="form-text text-muted">Use an known author ID.</small>
+    </div>
+    <div class="form-group">
+        <label for="quote">Quote</label>
+        <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.quote}}</textarea>
+        <small id="quoteHelp" class="form-text text-muted">Put the quote in here</small>
+    </div>
+    <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.category}}>
+        <small id="categoryHelp" class="form-text text-muted">General category, e.g Humor, Wisdom, Religious.</small>
+    </div>
+    <div class="form-group">
+        <button id="saveButton" class="btn btn-primary">Save</button>
+        <button id="cancelButton" class="btn btn-secondary">Cancel</button>
+    </div>
+    <div class="form-group">
+        <input id="id" type="text" class="form-control" aria-describedby="idHelp" disabled>
+        <small id="idHelp" class="form-text text-muted">You'll get this back after new one is created.</small>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $("#cancelButton").on('click', function(e) {
+            e.preventDefault();
+            window.location.href = "/lab/10/quotes";
+        });
+        $("#saveButton").on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/admin/quotes/edit",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "quoteId": $("#quoteId").val(),
+                    "authorId": $("#authorId").val(),
+                    "quote": $("#quote").val(),
+                    "category": $("#category").val()
+                }),
+                success: function(data, status) {
+                    $("#id").val(data.id);
+                    window.location.href = "/admin/quotes";
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                },
+                complete: function(data, status) { //optional, used for debugging purposes
+                    //console.log(status);
+                }
+            });
+        });
+    });
+</script>
