@@ -12,7 +12,7 @@ SELECT * FROM matches;
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user: 'gvoch3v86kyzmy53',
-        password: 'hmrcywyic6i7uni5 ',
+        password: 'hmrcywyic6i7uni5',
         database: 'sp1hoq0zi7n09fn5'
     });
 
@@ -21,7 +21,7 @@ SELECT * FROM matches;
     connection.query(sql, (error, results, fields) => {
         if (error) throw error;
 
-        res.render('../admin/index', {
+        res.render('../public/admin/index', {
             title: 'Quote Manager List',
             quotes: results
         });
