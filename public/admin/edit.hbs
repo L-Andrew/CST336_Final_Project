@@ -4,18 +4,18 @@
 <form>
     <div class="form-group">
         <label for="authorId">Author ID</label>
-        <input type="text" class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter Author ID" value={{data.authorId}}>
-        <input type="hidden" id="quoteId" value="{{data.quoteId}}" />
+        <input type="text" class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter Author ID" value={{data.id}}>
+        <input type="hidden" id="quoteId" value="{{data.id}}" />
         <small id="authorIdHelp" class="form-text text-muted">Use an known author ID.</small>
     </div>
     <div class="form-group">
-        <label for="quote">Quote</label>
-        <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.quote}}</textarea>
+        <label for="quote">Tournament name</label>
+        <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.tname}}</textarea>
         <small id="quoteHelp" class="form-text text-muted">Put the quote in here</small>
     </div>
     <div class="form-group">
-        <label for="category">Category</label>
-        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.category}}>
+        <label for="category">Capacity</label>
+        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.capacity}}>
         <small id="categoryHelp" class="form-text text-muted">General category, e.g Humor, Wisdom, Religious.</small>
     </div>
     <div class="form-group">
@@ -32,24 +32,24 @@
     $(document).ready(function() {
         $("#cancelButton").on('click', function(e) {
             e.preventDefault();
-            window.location.href = "/lab/10/quotes";
+            window.location.href = "/admin";
         });
         $("#saveButton").on('click', function(e) {
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "/admin/quotes/edit",
+                url: "/admin/edit",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "quoteId": $("#quoteId").val(),
-                    "authorId": $("#authorId").val(),
-                    "quote": $("#quote").val(),
-                    "category": $("#category").val()
+                    "id": $("#authorId").val(),
+                    "edit":$("#quoteId").val(),
+                    "tname": $("#quote").val(),
+                    "capacity": $("#category").val(),
                 }),
                 success: function(data, status) {
                     $("#id").val(data.id);
-                    window.location.href = "/admin/quotes";
+                    window.location.href = "/admin";
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

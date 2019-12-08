@@ -31,7 +31,7 @@ SELECT * FROM tournament;
 
 });
 
-router.get('/quotes/edit', function(req, res, next) {
+router.get('/edit', function(req, res, next) {
 
     const id = req.query.id;
 
@@ -40,7 +40,7 @@ router.get('/quotes/edit', function(req, res, next) {
         // to show an existing quote
 
         const sql = `
-        SELECT * FROM matches;
+        SELECT * FROM tournament WHERE id=?;
 `;
 
         const connection = mysql.createConnection({
@@ -74,7 +74,7 @@ router.get('/quotes/edit', function(req, res, next) {
 
 });
 
-router.post('/quotes/edit', function(req, res, next) {
+router.post('/edit', function(req, res, next) {
 
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
@@ -85,19 +85,19 @@ router.post('/quotes/edit', function(req, res, next) {
 
     connection.connect();
 
-    if (req.body.quoteId) {
+    if (req.body.edit) {
         connection.query(
-            'UPDATE l9_quotes SET authorId = ?, quote = ?, category = ? WHERE quoteId = ?', [req.body.authorId, req.body.quote, req.body.category, req.body.quoteId], // assuming POST
+            'UPDATE tournament SET id = ?, tname = ?, capacity = ? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity, req.body.id], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({
-                    id: results.quoteId
+                    id: results.id
                 });
             });
     }
     else {
         connection.query(
-            'INSERT INTO l9_quotes(authorId, quote, category) VALUES (?, ?, ?)', [req.body.authorId, req.body.quote, req.body.category], // assuming POST
+            'INSERT INTO tournament(id, tname, capacity) VALUES (?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({
