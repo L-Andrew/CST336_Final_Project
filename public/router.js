@@ -32,4 +32,38 @@ SELECT * FROM tournament;
     
 })
 
+router.get('/login', function(req, res, next){
+    res.render('../public/login',{
+        title: 'Login'
+    })
+})
+
+router.post('/login', function(req, res, next){
+    let successful = false;
+    let message = '';
+
+    // TODO: replace with MySQL SELECT and hashing/salting...
+    if (req.body.username === 'hello' && req.body.password === 'world') {
+        successful = true;
+        req.session.username = req.body.username;
+        // req.cookie('jason', 'the great!', { maxAge: 900000, httpOnly: true });
+    }
+    else {
+        // delete the user as punishment!
+        delete req.session.username;
+        message = 'Wrong username or password!'
+    }
+
+    console.log('session username', req.session.username);
+
+    // console.log('res.body', req.body);
+
+    // Return success or failure
+    res.json({
+        successful: successful,
+        message: message
+    });
+
+})
+
 module.exports = router;
