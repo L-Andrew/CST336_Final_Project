@@ -14,7 +14,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('view engine', 'jade');
 app.set('view engine', 'hbs');
 
 
@@ -47,8 +47,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(process.env.PORT || 3000, process.env.IP, function(){
-  console.log("Express Server is Running...");
-});
+// app.listen(process.env.PORT || 3000, process.env.IP, function(){
+//   console.log("Express Server is Running...");
+// });
 
 module.exports = app;
