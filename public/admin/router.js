@@ -3,10 +3,10 @@ const app = express();
 const router = express.Router();
 const mysql = require('mysql');
 
-router.get('/quotes', function(req, res, next) {
+router.get('/', function(req, res, next) {
 
     const sql = `
-SELECT * FROM matches;
+SELECT * FROM tournament;
 `;
 
     const connection = mysql.createConnection({
@@ -46,7 +46,7 @@ router.get('/quotes/edit', function(req, res, next) {
         const connection = mysql.createConnection({
             host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
             user: 'gvoch3v86kyzmy53',
-            password: 'hmrcywyic6i7uni5 ',
+            password: 'hmrcywyic6i7uni5',
             database: 'sp1hoq0zi7n09fn5'
         });
 
@@ -79,7 +79,7 @@ router.post('/quotes/edit', function(req, res, next) {
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user: 'gvoch3v86kyzmy53',
-        password: 'hmrcywyic6i7uni5 ',
+        password: 'hmrcywyic6i7uni5',
         database: 'sp1hoq0zi7n09fn5'
     });
 
@@ -110,7 +110,7 @@ router.post('/quotes/edit', function(req, res, next) {
 
 });
 
-router.get('/quotes/delete', function(req, res, next) {
+router.get('/delete', function(req, res, next) {
 
     const id = req.query.id;
 
@@ -121,16 +121,13 @@ router.get('/quotes/delete', function(req, res, next) {
     // to show an existing quote
 
     const sql = `
-SELECT q.*, CONCAT(a.firstName, ' ', a.lastName) AS fullName 
-FROM l9_quotes q INNER JOIN
-l9_author a ON q.authorId = a.authorId
-WHERE q.quoteId = ?
+SELECT * FROM tournament WHERE id = ?;
 `;
 
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user: 'gvoch3v86kyzmy53',
-        password: 'hmrcywyic6i7uni5 ',
+        password: 'hmrcywyic6i7uni5',
         database: 'sp1hoq0zi7n09fn5'
     });
 
@@ -140,7 +137,7 @@ WHERE q.quoteId = ?
         (error, results, fields) => {
             if (error) throw error;
 
-            res.render('../public/labs/10/delete', {
+            res.render('../public/admin/delete', {
                 title: 'Confirm Delete',
                 data: results[0] // get first element of results 
             });
@@ -150,9 +147,9 @@ WHERE q.quoteId = ?
 
 });
 
-router.delete('/quotes/delete', function(req, res, next) {
+router.delete('/delete', function(req, res, next) {
 
-    if (!req.body.quoteId || req.body.quoteId.length === 0) {
+    if (!req.body.id || req.body.id.length === 0) {
         return next(new Error('nothing to delete'));
     }
     
@@ -162,18 +159,18 @@ router.delete('/quotes/delete', function(req, res, next) {
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user: 'gvoch3v86kyzmy53',
-        password: 'hmrcywyic6i7uni5 ',
+        password: 'hmrcywyic6i7uni5',
         database: 'sp1hoq0zi7n09fn5'
     });
 
     connection.connect();
 
     connection.query(
-        'DELETE FROM l9_quotes WHERE quoteId = ?', [req.body.quoteId], // assuming POST
+        'DELETE FROM tournament WHERE id = ?', [req.body.id], // assuming POST
         (error, results, fields) => {
             if (error) throw error;
             res.json({
-                id: results.quoteId
+                id: results.id
             });
         });
 

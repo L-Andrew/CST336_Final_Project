@@ -1,25 +1,22 @@
 <h1>{{title}}</h1>
-<p>Add or edit a quote</p>
+
 <div class="alert alert-danger" role="alert">
     Are you sure you want to delete?
 </div>
 
 <form>
     <div class="form-group">
-        <label for="authorId">Author ID</label>
-        <input type="text" readonly class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter Author ID" value={{data.authorId}}>
-        <input type="hidden" id="quoteId" value="{{data.quoteId}}" />
-        <small id="authorIdHelp" class="form-text text-muted">Use an known author ID.</small>
+        <label for="authorId">Tournament ID</label>
+        <input type="text" readonly class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter tournament ID" value={{data.id}}>
+        <input type="hidden" id="quoteId" value="{{data.id}}" />
     </div>
     <div class="form-group">
-        <label for="quote">Quote</label>
-        <textarea class="form-control" readonly id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.quote}}</textarea>
-        <small id="quoteHelp" class="form-text text-muted">Put the quote in here</small>
+        <label for="quote">Tournament name</label>
+        <textarea class="form-control" readonly id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.tname}}</textarea>
     </div>
     <div class="form-group">
-        <label for="category">Category</label>
-        <input type="text" class="form-control" readonly id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.category}}>
-        <small id="categoryHelp" class="form-text text-muted">General category, e.g Humor, Wisdom, Religious.</small>
+        <label for="category">Capacity</label>
+        <input type="text" class="form-control" readonly id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.capacity}}>
     </div>
     <div class="form-group">
         <button id="deleteButton" class="btn btn-danger">Delete</button>
@@ -35,21 +32,21 @@
     $(document).ready(function() {
         $("#cancelButton").on('click', function(e) {
             e.preventDefault();
-            window.location.href = "/admin/quotes";
+            window.location.href = "/admin";
         });
         $("#deleteButton").on('click', function(e) {
             e.preventDefault();
             $.ajax({
                 type: "DELETE",
-                url: "/admin/quotes/delete",
+                url: "/admin/delete",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "quoteId": $("#quoteId").val(),
+                    "id": $("#quoteId").val(),
                 }),
                 success: function(data, status) {
                     $("#id").val(data.id);
-                    window.location.href = "/admin/quotes";
+                    window.location.href = "/admin";
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

@@ -4,23 +4,25 @@
 <table>
     <thead>
         <tr>
-            <th>quote</th>
-            <th>category</th>
-            <th>author</th>
+            <th>Tournament ID</th>
+            <th>Tournament name</th>
+            <th>Capacity</th>
+            <th>Status</th>
             <th>
-                <a class="btn btn-info" href="/lab/10/quotes/edit">Add Quote</a>
+                <a class="btn btn-info" href="/lab/10/quotes/edit">Add tournament</a>
             </th>
         </tr>
     </thead>
     <tbody>
 {{#each quotes}}
         <tr>
-            <td class="w-50">{{ID}}</td>
-            <td class="w-25">{{MatchDate}}</td>
-            <td>{{Team_id_home}}</td>
+            <td class="w-25">{{id}}</td>
+            <td class="w-25">{{tname}}</td>
+            <td class="w-25">{{capacity}}</td>
+             <td class="w-25">{{status}}</td>
             <td>
-                <a class="btn btn-primary" href="/admin/quotes/edit?id={{quoteId}}">Edit</a>
-                <a class="btn btn-danger" href="/admin/quotes/delete?id={{quoteId}}">Delete</a>
+                <a class="btn btn-primary" href="/admin/edit?id={{id}}">Edit</a>
+                <a class="btn btn-danger" href="/admin/delete?id={{id}}">Delete</a>
             </td>
         </tr>
 {{/each}}
