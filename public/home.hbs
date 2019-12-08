@@ -5,30 +5,27 @@
 
 <h1>{{title}}</h1>
 
-<div class = "container">
-    <div class = "row">
-        <div class = "col-sm">
-            Tournament Name
-        </div>
-        <div class = "col-sm">
-            Capacity
-        </div>
-        <div class = "col-sm">
-            Status
-        </div>
-        
-        
-        <a href = "">Login</a>
-    </div>
-{{!-- {{#each data}}
-    <div class = "row">
-        <div id = "{{authorId}}"class="col-sm">{{authorId}}</div>
-        <div class="col-sm">{{firstName}}</div>
-        <div class="col-sm">{{lastName}}</div>
-        <div class="col-sm">{{dob}}</div>
-        <div class="col-sm">{{dod}}</div>
-        <button id = "edit{{authorId}}">Edit</button>
-        <button id = "delete{{authorId}}">Delete</button>
-    </div>
-{{/each}} --}}
-</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Tournament Name</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th>
+                <a class="btn btn-info" href="">Admin Login</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+{{#each tournaments}}
+        <tr>
+            <td class="w-50">{{tname}}</td>
+            <td class="w-25">{{playercount}}/{{capacity}}</td>
+            <td class="w-25">{{status}}</td>
+            <td>
+                <a class="btn btn-primary" href="/lab/10/quotes/edit?id={{quoteId}}">Join</a>
+            </td>
+        </tr>
+{{/each}}
+    </tbody>
+</table>
