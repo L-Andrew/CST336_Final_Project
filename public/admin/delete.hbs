@@ -14,6 +14,10 @@
         <label for="quote">Tournament name</label>
         <textarea class="form-control" readonly id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.tname}}</textarea>
     </div>
+        <div class="form-group">
+        <label for="category">Playercount</label>
+        <input type="text" class="form-control" readonly id="playercount" aria-describedby="categoryHelp"  value={{data.playercount}}>
+    </div>
     <div class="form-group">
         <label for="category">Capacity</label>
         <input type="text" class="form-control" readonly id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.capacity}}>
@@ -21,10 +25,6 @@
     <div class="form-group">
         <button id="deleteButton" class="btn btn-danger">Delete</button>
         <button id="cancelButton" class="btn btn-secondary">Cancel</button>
-    </div>
-    <div class="form-group">
-        <input id="id" type="text" class="form-control" aria-describedby="idHelp" disabled>
-        <small id="idHelp" class="form-text text-muted">You'll get this back after new one is created.</small>
     </div>
 </form>
 
