@@ -179,4 +179,21 @@ router.delete('/delete', function(req, res, next) {
 
 });
 
+router.get('/result', function(req, res, next) {
+
+    const connection = mysql.createConnection({
+        host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user: 'gvoch3v86kyzmy53',
+        password: 'hmrcywyic6i7uni5',
+        database: 'sp1hoq0zi7n09fn5'
+    });
+
+    connection.connect();
+    
+    res.render('../public/admin/result');
+
+    connection.end();
+
+});
+
 module.exports = router;
