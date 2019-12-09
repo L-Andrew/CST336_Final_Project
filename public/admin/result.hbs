@@ -1,72 +1,179 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <table class="table-condensed" style="width:100%">
-                <tr>
-                    <td class="col-md-5">
-                        <div class="input-group">
-                            <div class="form-control">Team 1</div><span class="input-group-addon"><span class="badge pull-right">1</span></span>
-                        </div>
-                    </td>
-                    {{!--Round 1 Lines Top--}}
-                    <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">
-                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>
-                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>
-                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>
-                    </td>
-                    {{!--Round 2--}}
-                    <td class="col-md-5" rowspan="2">
-                        <div class="input-group">
-                            <div class="form-control">Team 1 round 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>
-                        </div>
-                    </td>
-                    {{!--Round 2 Lines--}}
-                    <td class="col-md-2" rowspan="4" style="padding:0px; position:relative; min-width:50px;">
-                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>
-                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>
-                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>
-                    </td>
-                    {{!--Round 3--}}
-                    <td class="col-md-5" rowspan="4">
-                        <div class="input-group">
-                            <div class="form-control">Team 1 round 3</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="input-group">
-                            <div class="form-control">Team 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-5">
-                        <div class="input-group">
-                            <div class="form-control">Team 3</div><span class="input-group-addon"><span class="badge pull-right">1</span></span>
-                        </div>
-                    </td>
-                    {{!--Round 1 Lines Bottom--}}
-                    <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">
-                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>
-                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>
-                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>
-                    </td>
-                    {{!--Round 2--}}
-                    <td class="col-md-5" rowspan="2">
-                        <div class="input-group">
-                            <div class="form-control">Team 3 round 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="input-group">
-                            <div class="form-control">Team 4</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
+{{!--<div class="container">--}}
+{{!--    <div class="row">--}}
+{{!--        <div class="col-md-6">--}}
+{{!--            <table class="table-condensed" style="width:100%">--}}
+{{!--                <tr>--}}
+{{!--                    <td class="col-md-5">--}}
+{{!--                        <div class="input-group">--}}
+{{!--                            <div class="form-control">Team 1</div><span class="input-group-addon"><span class="badge pull-right">1</span></span>--}}
+{{!--                        </div>--}}
+{{!--                    </td>--}}
+{{!--Round 1 Lines Top--}}
+{{!--                    <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">--}}
+{{!--                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>--}}
+{{!--                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>--}}
+{{!--                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>--}}
+{{!--                    </td>--}}
+{{!--Round 2--}}
+{{!--                    <td class="col-md-5" rowspan="2">--}}
+{{!--                        <div class="input-group">--}}
+{{!--                            <div class="form-control">Team 1 round 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
+{{!--                        </div>--}}
+{{!--                    </td>--}}
+{{!--Round 2 Lines--}}
+{{!--                    <td class="col-md-2" rowspan="4" style="padding:0px; position:relative; min-width:50px;">--}}
+{{!--                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>--}}
+{{!--                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>--}}
+{{!--                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>--}}
+{{!--                    </td>--}}
+{{!--Round 3--}}
+{{!--                    <td class="col-md-5" rowspan="4">--}}
+{{!--                        <div class="input-group">--}}
+{{!--                            <div class="form-control">Team 1 round 3</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
+{{!--                        </div>--}}
+{{!--                    </td>--}}
+{{!--                </tr>--}}
+{{!--                <tr>--}}
+{{!--                    <td>--}}
+{{!--                        <div class="input-group">--}}
+{{!--                            <div class="form-control">Team 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
+{{!--                        </div>--}}
+{{!--                    </td>--}}
+{{!--                </tr>--}}
+{{!--                <tr>--}}
+{{!--                    <td class="col-md-5">--}}
+{{!--                        <div class="input-group">--}}
+{{!--                            <div class="form-control">Team 3</div><span class="input-group-addon"><span class="badge pull-right">1</span></span>--}}
+{{!--                        </div>--}}
+{{!--                    </td>--}}
+{{!--Round 1 Lines Bottom--}}
+{{!--                    <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">--}}
+{{!--                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>--}}
+{{!--                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>--}}
+{{!--                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>--}}
+{{!--                    </td>--}}
+{{!--Round 2--}}
+{{!--                    <td class="col-md-5" rowspan="2">--}}
+{{!--                        <div class="input-group">--}}
+{{!--                            <div class="form-control">Team 3 round 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
+{{!--                        </div>--}}
+{{!--                    </td>--}}
+{{!--                </tr>--}}
+{{!--                <tr>--}}
+{{!--                    <td>--}}
+{{!--                        <div class="input-group">--}}
+{{!--                            <div class="form-control">Team 4</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
+{{!--                        </div>--}}
+{{!--                    </td>--}}
+{{!--                </tr>--}}
+{{!--            </table>--}}
+{{!--        </div>--}}
+{{!--    </div>--}}
+{{!--</div>--}}
+<style>
+    /*
+ *  Flex Layout Specifics
+*/
+
+    main {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .round {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 200px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .round .spacer {
+        flex-grow: 1;
+    }
+
+    .round .spacer:first-child,
+    .round .spacer:last-child {
+        flex-grow: .5;
+    }
+
+    .round .game-spacer {
+        flex-grow: 1;
+    }
+
+    /*
+ *  General Styles
+*/
+
+    body {
+        font-family: sans-serif;
+        font-size: small;
+        padding: 10px;
+        line-height: 1.4em;
+    }
+
+    li.game {
+        padding-left: 20px;
+    }
+
+    li.game.winner {
+        font-weight: bold;
+    }
+
+    li.game span {
+        float: right;
+        margin-right: 5px;
+    }
+
+    li.game-top {
+        border-bottom: 1px solid #aaa;
+    }
+
+    li.game-spacer {
+        border-right: 1px solid #aaa;
+        min-height: 40px;
+    }
+
+    li.game-bottom {
+        border-top: 1px solid #aaa;
+    }
+</style>
+
+<h1>Tournament Name</h1>
+<main id="tournament">
+    <ul class="round round-1">
+        <li class="spacer">&nbsp;</li>
+
+        <li class="game game-top winner">Lousville <span>79</span></li>
+        <li class="game game-spacer">&nbsp;</li>
+        <li class="game game-bottom ">NC A&T <span>48</span></li>
+
+        <li class="spacer">&nbsp;</li>
+
+        <li class="game game-top winner">Colo St <span>84</span></li>
+        <li class="game game-spacer">&nbsp;</li>
+        <li class="game game-bottom ">Missouri <span>72</span></li>
+
+        <li class="spacer">&nbsp;</li>
+    </ul>
+    <ul class="round round-2">
+        <li class="spacer">&nbsp;</li>
+
+        <li class="game game-top winner">Lousville <span>82</span></li>
+        <li class="game game-spacer">&nbsp;</li>
+        <li class="game game-bottom ">Colo St <span>56</span></li>
+
+        <li class="spacer">&nbsp;</li>
+    </ul>
+    <ul class="round round-3">
+        <li class="spacer">&nbsp;</li>
+        
+        <li class="game game-top winner">Lousville <span>77</span></li>
+        
+        <li class="spacer">&nbsp;</li>
+    </ul>
+</main>
+
+<button class='btn btn-danger'>Cancel</button>
+<button class='btn btn-primary'>Save</button>
