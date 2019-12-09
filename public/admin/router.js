@@ -22,8 +22,8 @@ SELECT * FROM tournament;
         if (error) throw error;
 
         res.render('../public/admin/index', {
-            title: 'Quote Manager List',
-            quotes: results
+            title: 'Tournament List',
+            data: results
         });
     });
 
@@ -57,7 +57,7 @@ router.get('/edit', function(req, res, next) {
                 if (error) throw error;
 
                 res.render('../public/admin/edit', {
-                    title: 'Edit Quote',
+                    title: 'Edit Tournament',
                     data: results[0] // get first element of results 
                 });
             });
@@ -67,7 +67,7 @@ router.get('/edit', function(req, res, next) {
     }
     else {
         res.render('../public/admin/edit', {
-            title: 'Add Quote',
+            title: 'Add Tournament',
             data: {}
         });
     }
@@ -97,7 +97,7 @@ router.post('/edit', function(req, res, next) {
     }
     else {
         connection.query(
-            'INSERT INTO tournament(id, tname, capacity) VALUES (?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity], // assuming POST
+            'INSERT INTO tournament(id, tname, capacity,playercount) VALUES (?, ?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity,req.body.playercount], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({

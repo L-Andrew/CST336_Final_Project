@@ -1,23 +1,19 @@
 <h1>{{title}}</h1>
-<p>Add or edit a quote</p>
-
 <form>
     <div class="form-group">
-        <label for="authorId">Author ID</label>
-        <input type="text" class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter Author ID" value={{data.id}}>
+        <label for="authorId">Tournament ID</label>
+        <input type="text" class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter Tournament id" value={{data.id}}>
         <input type="hidden" id="quoteId" value="{{data.id}}" />
-        <small id="authorIdHelp" class="form-text text-muted">Use an known author ID.</small>
+        <small id="authorIdHelp" class="form-text text-muted">Can be empty</small>
     </div>
     <div class="form-group">
         <label for="quote">Tournament name</label>
         <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.tname}}</textarea>
-        <small id="quoteHelp" class="form-text text-muted">Put the quote in here</small>
     </div>
     <div class="form-group">
         <label for="category">Capacity</label>
         <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.capacity}}>
-        <small id="categoryHelp" class="form-text text-muted">General category, e.g Humor, Wisdom, Religious.</small>
-    </div>
+
     <div class="form-group">
         <button id="saveButton" class="btn btn-primary">Save</button>
         <button id="cancelButton" class="btn btn-secondary">Cancel</button>
@@ -46,6 +42,7 @@
                     "edit":$("#quoteId").val(),
                     "tname": $("#quote").val(),
                     "capacity": $("#category").val(),
+                    "playercount":0
                 }),
                 success: function(data, status) {
                     $("#id").val(data.id);
