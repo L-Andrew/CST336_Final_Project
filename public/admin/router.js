@@ -87,7 +87,7 @@ router.post('/edit', function(req, res, next) {
 
     if (req.body.edit) {
         connection.query(
-            'UPDATE tournament SET id = ?, tname = ?, capacity = ?,status=? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity,req.body.status,req.body.id,], // assuming POST
+            'UPDATE tournament SET id = ?, tname = ?, capacity = ?,status=? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity, req.body.status, req.body.id, ], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({
@@ -97,7 +97,7 @@ router.post('/edit', function(req, res, next) {
     }
     else {
         connection.query(
-            'INSERT INTO tournament(id, tname, capacity,playercount,status) VALUES (?, ?, ?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity,req.body.playercount,req.body.status], // assuming POST
+            'INSERT INTO tournament(id, tname, capacity,playercount,status) VALUES (?, ?, ?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity, req.body.playercount, req.body.status], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({
@@ -152,7 +152,7 @@ router.delete('/delete', function(req, res, next) {
     if (!req.body.id || req.body.id.length === 0) {
         return next(new Error('nothing to delete'));
     }
-    
+
     // TODO: check if there are dependent records...i.e. favorites
     // If there are, error
 
@@ -181,16 +181,42 @@ router.delete('/delete', function(req, res, next) {
 
 router.get('/result', function(req, res, next) {
 
+    const id = req.query.id;
+
+    const sql = `
+        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number
+        FROM matches m
+        INNER JOIN team t1 on t1.id = m.Team_id_home
+        INNER JOIN team t2 on t2.id = m.Team_id_away
+        WHERE m.Round_number = 1;
+        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number
+        FROM matches m
+        INNER JOIN team t1 on t1.id = m.Team_id_home
+        INNER JOIN team t2 on t2.id = m.Team_id_away
+        WHERE m.Round_number = 2;
+    `;
+
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user: 'gvoch3v86kyzmy53',
         password: 'hmrcywyic6i7uni5',
-        database: 'sp1hoq0zi7n09fn5'
+        database: 'sp1hoq0zi7n09fn5',
+        multipleStatements: true
     });
 
     connection.connect();
-    
-    res.render('../public/admin/result');
+
+    connection.query(sql, [id,id],
+        (error, results, fields) => {
+            if (error) throw error;
+            console.log(results)
+
+            res.render('../public/admin/result', {
+                title: 'Edit Tournament',
+                round1: results[0],
+                round2: results[1]
+            });
+        });
 
     connection.end();
 

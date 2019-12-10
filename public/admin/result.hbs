@@ -1,75 +1,3 @@
-{{!--<div class="container">--}}
-{{!--    <div class="row">--}}
-{{!--        <div class="col-md-6">--}}
-{{!--            <table class="table-condensed" style="width:100%">--}}
-{{!--                <tr>--}}
-{{!--                    <td class="col-md-5">--}}
-{{!--                        <div class="input-group">--}}
-{{!--                            <div class="form-control">Team 1</div><span class="input-group-addon"><span class="badge pull-right">1</span></span>--}}
-{{!--                        </div>--}}
-{{!--                    </td>--}}
-{{!--Round 1 Lines Top--}}
-{{!--                    <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">--}}
-{{!--                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>--}}
-{{!--                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>--}}
-{{!--                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>--}}
-{{!--                    </td>--}}
-{{!--Round 2--}}
-{{!--                    <td class="col-md-5" rowspan="2">--}}
-{{!--                        <div class="input-group">--}}
-{{!--                            <div class="form-control">Team 1 round 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
-{{!--                        </div>--}}
-{{!--                    </td>--}}
-{{!--Round 2 Lines--}}
-{{!--                    <td class="col-md-2" rowspan="4" style="padding:0px; position:relative; min-width:50px;">--}}
-{{!--                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>--}}
-{{!--                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>--}}
-{{!--                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>--}}
-{{!--                    </td>--}}
-{{!--Round 3--}}
-{{!--                    <td class="col-md-5" rowspan="4">--}}
-{{!--                        <div class="input-group">--}}
-{{!--                            <div class="form-control">Team 1 round 3</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
-{{!--                        </div>--}}
-{{!--                    </td>--}}
-{{!--                </tr>--}}
-{{!--                <tr>--}}
-{{!--                    <td>--}}
-{{!--                        <div class="input-group">--}}
-{{!--                            <div class="form-control">Team 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
-{{!--                        </div>--}}
-{{!--                    </td>--}}
-{{!--                </tr>--}}
-{{!--                <tr>--}}
-{{!--                    <td class="col-md-5">--}}
-{{!--                        <div class="input-group">--}}
-{{!--                            <div class="form-control">Team 3</div><span class="input-group-addon"><span class="badge pull-right">1</span></span>--}}
-{{!--                        </div>--}}
-{{!--                    </td>--}}
-{{!--Round 1 Lines Bottom--}}
-{{!--                    <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">--}}
-{{!--                        <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:25%; float: left; position:absolute; top:25%;"></div>--}}
-{{!--                        <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:25%; float: left; position:absolute; top:50%;"></div>--}}
-{{!--                        <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>--}}
-{{!--                    </td>--}}
-{{!--Round 2--}}
-{{!--                    <td class="col-md-5" rowspan="2">--}}
-{{!--                        <div class="input-group">--}}
-{{!--                            <div class="form-control">Team 3 round 2</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
-{{!--                        </div>--}}
-{{!--                    </td>--}}
-{{!--                </tr>--}}
-{{!--                <tr>--}}
-{{!--                    <td>--}}
-{{!--                        <div class="input-group">--}}
-{{!--                            <div class="form-control">Team 4</div><span class="input-group-addon"><span class="badge pull-right">0</span></span>--}}
-{{!--                        </div>--}}
-{{!--                    </td>--}}
-{{!--                </tr>--}}
-{{!--            </table>--}}
-{{!--        </div>--}}
-{{!--    </div>--}}
-{{!--</div>--}}
 <style>
     /*
  *  Flex Layout Specifics
@@ -143,37 +71,75 @@
 <h1>Tournament Name</h1>
 <main id="tournament">
     <ul class="round round-1">
+        {{#each round1}}
         <li class="spacer">&nbsp;</li>
-
-        <li class="game game-top winner">Lousville <span>79</span></li>
+        <li class="game game-top">{{Team1_name}}</li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom ">NC A&T <span>48</span></li>
-
-        <li class="spacer">&nbsp;</li>
-
-        <li class="game game-top winner">Colo St <span>84</span></li>
-        <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom ">Missouri <span>72</span></li>
-
+        <li class="game game-bottom">{{Team2_name}}</li>
+        {{/each}}
         <li class="spacer">&nbsp;</li>
     </ul>
     <ul class="round round-2">
-        <li class="spacer">&nbsp;</li>
-
-        <li class="game game-top winner">Lousville <span>82</span></li>
-        <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom ">Colo St <span>56</span></li>
-
+        {{#if round2}}
+            <li class="spacer">&nbsp;</li>
+            <li class="game game-top">
+                <select>
+                    <option>{{round2.0.Team1_name}}</option>
+                    <option value={{round1.0.Team_id_home}}>{{round1.0.Team1_name}}</option>
+                    <option value={{round1.0.Team_id_away}}>{{round1.0.Team2_name}}</option>
+                </select>
+            </li>
+            <li class="game game-spacer">&nbsp;</li>
+            <li class="game game-bottom ">
+                <select>
+                    <option>{{round2.0.Team2_name}}</option>
+                    <option value={{round1.1.Team_id_home}}>{{round1.1.Team1_name}}</option>
+                    <option value={{round1.1.Team_id_away}}>{{round1.1.Team2_name}}</option>
+                </select>
+            </li>
+        {{else}}
+            <li class="spacer">&nbsp;</li>
+            <li class="game game-top">
+                <select>
+                    <option>Select winner</option>
+                    <option value={{round1.0.Team_id_home}}>{{round1.0.Team1_name}}</option>
+                    <option value={{round1.0.Team_id_away}}>{{round1.0.Team2_name}}</option>
+                </select>
+            </li>
+            <li class="game game-spacer">&nbsp;</li>
+            <li class="game game-bottom ">
+                <select>
+                    <option>Select winner</option>
+                    <option value={{round1.1.Team_id_home}}>{{round1.1.Team1_name}}</option>
+                    <option value={{round1.1.Team_id_away}}>{{round1.1.Team2_name}}</option>
+                </select>
+            </li>
+        {{/if}}
         <li class="spacer">&nbsp;</li>
     </ul>
     <ul class="round round-3">
         <li class="spacer">&nbsp;</li>
-        
-        <li class="game game-top winner">Lousville <span>77</span></li>
-        
+
+        <li class="game game-top">
+            <select>
+                <option>Select winner</option>
+                <option selected="selected">Lousville</option>
+                <option>Colo St</option>
+            </select>
+        </li>
+
         <li class="spacer">&nbsp;</li>
     </ul>
 </main>
 
-<button class='btn btn-danger'>Cancel</button>
+<button id="cancelButton" class="btn btn-danger">Cancel</button>
 <button class='btn btn-primary'>Save</button>
+
+<script>
+    $(document).ready(function() {
+        $("#cancelButton").on('click', function(e) {
+            e.preventDefault();
+            window.location.href = "/admin";
+        });
+    });
+</script>
