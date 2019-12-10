@@ -2,12 +2,18 @@
 <!-- DO THIS WITH FLEXBOX OR BOOTSTRAP GRID INSTEAD OF TABLE-->
 <table>
     <thead>
-        <tr>
+        
+    </tbody>
+
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
             <th>Tournament ID</th>
             <th>Tournament name</th>
-                <th>Playercount</th>
-            <th>Capacity</th>
-            <th>
+            <th>Player</th>
+            <th>Status</th>
+            
                 <a class="btn btn-info" href="/admin/edit">Add tournament</a>
             </th>
         </tr>
@@ -17,8 +23,8 @@
         <tr>
             <td class="w-25">{{id}}</td>
             <td class="w-25">{{tname}}</td>
-             <td class="w-25">{{playercount}}</td>
-            <td class="w-25">{{capacity}}</td>
+             <td class="w-25">{{playercount}}/{{capacity}}</td>
+             <td class="w-25">{{status}}</td>
             <td>
                 <a class="btn btn-primary" href="/admin/edit?id={{id}}">Edit</a>
                 <a class="btn btn-danger" href="/admin/delete?id={{id}}">Delete</a>
@@ -26,3 +32,4 @@
         </tr>
 {{/each}}
     </tbody>
+</table>

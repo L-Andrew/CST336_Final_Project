@@ -8,12 +8,19 @@
     </div>
     <div class="form-group">
         <label for="quote">Tournament name</label>
-        <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.tname}}</textarea>
+        <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Tournament name">{{data.tname}}</textarea>
     </div>
     <div class="form-group">
         <label for="category">Capacity</label>
-        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.capacity}}>
-
+        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Capacity" value={{data.capacity}}>
+    <div class="form-group">
+        <label for="quote">Status</label>
+ <div><select id="status">
+  <option value="Waiting for players">Waiting for players</option>
+  <option value="Ended">Ended</option>
+  <option value="Live">Live</option>
+  <div>
+</select> </div>    </div>
     <div class="form-group">
         <button id="saveButton" class="btn btn-primary">Save</button>
         <button id="cancelButton" class="btn btn-secondary">Cancel</button>
@@ -42,6 +49,7 @@
                     "edit":$("#quoteId").val(),
                     "tname": $("#quote").val(),
                     "capacity": $("#category").val(),
+                    "status":$("#status option:selected" ).val(),
                     "playercount":0
                 }),
                 success: function(data, status) {

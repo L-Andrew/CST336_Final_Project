@@ -87,7 +87,7 @@ router.post('/edit', function(req, res, next) {
 
     if (req.body.edit) {
         connection.query(
-            'UPDATE tournament SET id = ?, tname = ?, capacity = ? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity, req.body.id], // assuming POST
+            'UPDATE tournament SET id = ?, tname = ?, capacity = ?,status=? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity,req.body.status,req.body.id,], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({
@@ -97,7 +97,7 @@ router.post('/edit', function(req, res, next) {
     }
     else {
         connection.query(
-            'INSERT INTO tournament(id, tname, capacity,playercount) VALUES (?, ?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity,req.body.playercount], // assuming POST
+            'INSERT INTO tournament(id, tname, capacity,playercount,status) VALUES (?, ?, ?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity,req.body.playercount,req.body.status], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({
