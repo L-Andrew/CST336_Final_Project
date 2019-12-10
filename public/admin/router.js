@@ -188,12 +188,12 @@ router.get('/result', function(req, res, next) {
         FROM matches m
         INNER JOIN team t1 on t1.id = m.Team_id_home
         INNER JOIN team t2 on t2.id = m.Team_id_away
-        WHERE m.Round_number = 1;
+        WHERE m.Round_number = 1 AND Tournament_id = ?;
         SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number
         FROM matches m
         INNER JOIN team t1 on t1.id = m.Team_id_home
         INNER JOIN team t2 on t2.id = m.Team_id_away
-        WHERE m.Round_number = 2;
+        WHERE m.Round_number = 2 AND Tournament_id = ?;
     `;
 
     const connection = mysql.createConnection({
