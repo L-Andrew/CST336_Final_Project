@@ -209,12 +209,12 @@ router.get('/result', function(req, res, next) {
     connection.query(sql, [id,id],
         (error, results, fields) => {
             if (error) throw error;
-            console.log(results)
 
             res.render('../public/admin/result', {
                 title: 'Edit Tournament',
                 round1: results[0],
                 round2: results[1]
+                // round2: null
             });
         });
 

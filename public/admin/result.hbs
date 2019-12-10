@@ -83,7 +83,7 @@
         {{#if round2}}
             <li class="spacer">&nbsp;</li>
             <li class="game game-top">
-                <select>
+                <select id="round1WinnerA" class="round1Winners">
                     <option>{{round2.0.Team1_name}}</option>
                     <option value={{round1.0.Team_id_home}}>{{round1.0.Team1_name}}</option>
                     <option value={{round1.0.Team_id_away}}>{{round1.0.Team2_name}}</option>
@@ -91,7 +91,7 @@
             </li>
             <li class="game game-spacer">&nbsp;</li>
             <li class="game game-bottom ">
-                <select>
+                <select id="round1WinnerB" class="round1Winners">
                     <option>{{round2.0.Team2_name}}</option>
                     <option value={{round1.1.Team_id_home}}>{{round1.1.Team1_name}}</option>
                     <option value={{round1.1.Team_id_away}}>{{round1.1.Team2_name}}</option>
@@ -100,7 +100,7 @@
         {{else}}
             <li class="spacer">&nbsp;</li>
             <li class="game game-top">
-                <select>
+                <select id="round1WinnerA" class="round1Winners">
                     <option>Select winner</option>
                     <option value={{round1.0.Team_id_home}}>{{round1.0.Team1_name}}</option>
                     <option value={{round1.0.Team_id_away}}>{{round1.0.Team2_name}}</option>
@@ -108,7 +108,7 @@
             </li>
             <li class="game game-spacer">&nbsp;</li>
             <li class="game game-bottom ">
-                <select>
+                <select id="round1WinnerB" class="round1Winners">
                     <option>Select winner</option>
                     <option value={{round1.1.Team_id_home}}>{{round1.1.Team1_name}}</option>
                     <option value={{round1.1.Team_id_away}}>{{round1.1.Team2_name}}</option>
@@ -119,15 +119,21 @@
     </ul>
     <ul class="round round-3">
         <li class="spacer">&nbsp;</li>
-
         <li class="game game-top">
-            <select>
-                <option>Select winner</option>
-                <option selected="selected">Lousville</option>
-                <option>Colo St</option>
+            <select id="round2Winner" class="round2Winners">
+{{!--UPDATE WHEN WE HAVE WINNER SET UP--}}
+                {{#if round2}}
+                            <option>ROUND 2 WINNER NAME HERE</option>
+                            <option id="round2WinnerA" value={{round2.0.Team_id_home}}>{{round2.0.Team1_name}}</option>
+                            <option id="round2WinnerB" value={{round2.0.Team_id_away}}>{{round2.0.Team2_name}}</option>
+                    
+                {{else}}
+                            <option>Select winner</option>
+                            <option id="round2WinnerA"></option>
+                            <option id="round2WinnerB"></option>
+                {{/if}}
             </select>
         </li>
-
         <li class="spacer">&nbsp;</li>
     </ul>
 </main>
@@ -137,6 +143,14 @@
 
 <script>
     $(document).ready(function() {
+        $("#round1WinnerA").on('change', function() {
+            $("#round2WinnerA").html($("#round1WinnerA option:selected").text());
+            $("#round2WinnerA").val($("#round1WinnerA").val());
+        });
+        $("#round1WinnerB").on('change', function() {
+            $("#round2WinnerB").html($("#round1WinnerB option:selected").text());
+            $("#round2WinnerB").val($("#round1WinnerB").val());
+        });
         $("#cancelButton").on('click', function(e) {
             e.preventDefault();
             window.location.href = "/admin";
