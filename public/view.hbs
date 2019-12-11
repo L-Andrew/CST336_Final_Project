@@ -1,0 +1,16 @@
+<h1>{{title}}</h1>
+
+<div>Status: {{status}}</div>
+<div>Enrolled: {{enrolled}}</div>
+<div>Capacity: {{capacity}}</div>
+
+<hr>
+
+<h4>Players</h4>
+{{#each tournaments}}
+    <div>{{firstName}} <span> </span> {{lastName}}</div>
+{{/each}}
+
+<br><br>
+
+<a class="btn btn-info" href="/home">Go Back</a>
