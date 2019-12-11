@@ -1,6 +1,7 @@
 var express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
+const session = require("express-session");
 
 router.get('/', function(req, res, next){
     
@@ -28,6 +29,46 @@ SELECT * FROM tournament;
     });
 
     connection.end();
+    
+    
+})
+
+
+router.get('/view', function(req, res, next){
+
+    const id = req.query.id
+
+    if(id){
+        const sql = `
+        SELECT *
+        FROM tournament
+        INNER JOIN user on tournament.id = user.tournament_id
+        WHERE tournament.id = ${id};
+    `;
+        const connection = mysql.createConnection({
+            host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+            user: 'gvoch3v86kyzmy53',
+            password: 'hmrcywyic6i7uni5',
+            database: 'sp1hoq0zi7n09fn5'
+        });
+    
+        connection.connect();
+    
+        connection.query(sql, (error, results, fields) => {
+            if (error) throw error;
+    
+            res.render('../public/view', {
+                title: results[0].tname,
+                tournaments: results
+            });
+            
+        });
+    
+        connection.end();
+
+    }
+    
+
     
     
 })
