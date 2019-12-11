@@ -291,13 +291,14 @@
                 contentType: "application/json",
                 data: JSON.stringify({
                     "username": $("#login").val(),
-                    "password": $("#password").val()
+                    "password": $("#password").val(),
+                    "admin" : true
                 }),
                 success: function(result, status) {
                     console.log("got login status back", result);
                     if (result.successful) {
                         // This will navigate to wherever i say...
-                        window.location.href = '/auth/dashboard';
+                        window.location.href = '/admin';
                     }
                     else {
                         // Show an error message or something and stay here
