@@ -1,50 +1,74 @@
 <h1>{{title}}</h1>
-<!-- DO THIS WITH FLEXBOX OR BOOTSTRAP GRID INSTEAD OF TABLE-->
-<table>
-    <thead>
-        
-    </tbody>
-
+<button id="logoutButton" class="btn btn-warning float-right">Logout</button>
 
 <table class="table table-striped">
     <thead class="thead-dark">
-      <tr>
+        <tr>
             <th>Tournament ID</th>
             <th>Tournament name</th>
             <th>Player</th>
             <th>Status</th>
-            
-                <a class="btn btn-info" href="/admin/edit">Add tournament</a>
+            <th><a class="btn btn-info" href="/admin/edit">Add tournament</a></th>
             </th>
         </tr>
     </thead>
     <tbody>
-{{#each data}}
+        {{#each data}}
         <tr>
             <td class="w-25">{{id}}</td>
             <td class="w-25">{{tname}}</td>
-             <td class="w-25">{{playercount}}/{{capacity}}</td>
-             <td class="w-25">{{status}}</td>
+            <td class="w-25">{{playercount}}/{{capacity}}</td>
+            <td class="w-25">{{status}}</td>
             <td>
                 <a class="btn btn-primary" href="/admin/edit?id={{id}}">Edit</a>
                 <a class="btn btn-danger" href="/admin/delete?id={{id}}">Delete</a>
             </td>
         </tr>
-{{/each}}
+        {{/each}}
     </tbody>
 </table>
 
 <div id="twitch-embed"></div>
 
-    <!-- Load the Twitch embed script -->
-    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+<!-- Load the Twitch embed script -->
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
 
-    <!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
-    <script type="text/javascript">
-      new Twitch.Embed("twitch-embed", {
+<!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
+<script type="text/javascript">
+    new Twitch.Embed("twitch-embed", {
         width: 854,
         height: 480,
         channel: "esl_csgo"
-      });
-    </script>
-  </body>   
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#logoutButton').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: "logout",
+                dataType: "json",
+                success: function(result, status) {
+                    console.log("got logout status back", result);
+                    if (result.successful) {
+                        window.location.href = '../';
+                    }
+                    else {
+                        // Show an error message or something and stay here
+                        $('#message').html(result.message);
+                        $('#message').show();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    err = eval("error: (" + xhr.responseText + ")");
+                    console.error(err);
+                },
+                complete: function(data, status) { //optional, used for debugging purposes
+                    console.log(status);
+                }
+            });
+        })
+    });
+</script>

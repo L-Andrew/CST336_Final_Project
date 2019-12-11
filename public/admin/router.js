@@ -31,6 +31,20 @@ SELECT * FROM tournament;
 
 });
 
+router.get('/logout', function(req, res, next) {
+    console.log("logging out")
+
+    if (req.session && req.session.username && req.session.username.length) {
+        delete req.session.username;
+    }
+
+    res.json({
+        successful: true,
+        message: ''
+    });
+
+});
+
 router.get('/edit', function(req, res, next) {
 
     const id = req.query.id;
