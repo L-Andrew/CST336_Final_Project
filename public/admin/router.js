@@ -41,17 +41,41 @@ router.get('/edit', function(req, res, next) {
 
         const sql = `
         SELECT * FROM tournament WHERE id=?;
-        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number, m.Winner_id, t3.teamname AS Winner
+        SELECT m.id, m.user_id_home AS User1_name, t1.teamname AS Team1_name, m.user_id_away AS User2_name, t2.teamname AS Team2_name, m.Round_number, m.Winning_user_id, t3.teamname AS Winner
         FROM matches m
-        INNER JOIN team t1 on t1.id = m.Team_id_home
-        INNER JOIN team t2 on t2.id = m.Team_id_away
-        INNER JOIN team t3 on t3.id = m.Winner_id
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t1 on t1.id = m.user_id_home
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t2 on t2.id = m.user_id_away
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t3 on t3.id = m.winning_user_id
         WHERE m.Round_number = 1 AND Tournament_id = ?;
-        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number, m.Winner_id, t3.teamname AS Winner
+        SELECT m.id, m.user_id_home AS User1_name, t1.teamname AS Team1_name, m.user_id_away AS User2_name, t2.teamname AS Team2_name, m.Round_number, m.Winning_user_id, t3.teamname AS Winner
         FROM matches m
-        INNER JOIN team t1 on t1.id = m.Team_id_home
-        INNER JOIN team t2 on t2.id = m.Team_id_away
-        INNER JOIN team t3 on t3.id = m.Winner_id
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t1 on t1.id = m.user_id_home
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t2 on t2.id = m.user_id_away
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t3 on t3.id = m.winning_user_id
         WHERE m.Round_number = 2 AND Tournament_id = ?;
         `;
 
