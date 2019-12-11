@@ -205,7 +205,7 @@ router.post('/join', function(req, res, next){
     connection.connect();
 
     connection.query(
-        'UPDATE user SET tournament_id = ?', [id]
+        'UPDATE user SET tournament_id = ? WHERE username = ? && password = ?', [id, username, password]
     , (error, results, fields) => {
         if (error) throw error;
         
