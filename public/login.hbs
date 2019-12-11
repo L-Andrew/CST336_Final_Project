@@ -295,8 +295,7 @@
                 contentType: "application/json",
                 data: JSON.stringify({
                     "username": $("#login").val(),
-                    "password": $("#password").val(),
-                    "admin" : true
+                    "password": $("#password").val()
                 }),
                 success: function(result, status) {
                     console.log("got login status back", result);
