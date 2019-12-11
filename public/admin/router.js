@@ -41,15 +41,17 @@ router.get('/edit', function(req, res, next) {
 
         const sql = `
         SELECT * FROM tournament WHERE id=?;
-        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number
+        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number, m.Winner_id, t3.teamname AS Winner
         FROM matches m
         INNER JOIN team t1 on t1.id = m.Team_id_home
         INNER JOIN team t2 on t2.id = m.Team_id_away
+        INNER JOIN team t3 on t3.id = m.Winner_id
         WHERE m.Round_number = 1 AND Tournament_id = ?;
-        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number
+        SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number, m.Winner_id, t3.teamname AS Winner
         FROM matches m
         INNER JOIN team t1 on t1.id = m.Team_id_home
         INNER JOIN team t2 on t2.id = m.Team_id_away
+        INNER JOIN team t3 on t3.id = m.Winner_id
         WHERE m.Round_number = 2 AND Tournament_id = ?;
         `;
 
@@ -191,46 +193,5 @@ router.delete('/delete', function(req, res, next) {
     connection.end();
 
 });
-
-// router.get('/result', function(req, res, next) {
-
-//     const id = req.query.id;
-
-//     const sql = `
-//         SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number
-//         FROM matches m
-//         INNER JOIN team t1 on t1.id = m.Team_id_home
-//         INNER JOIN team t2 on t2.id = m.Team_id_away
-//         WHERE m.Round_number = 1 AND Tournament_id = ?;
-//         SELECT m.id, m.Team_id_home, t1.teamname AS Team1_name, m.Team_id_away, t2.teamname AS Team2_name, m.Round_number
-//         FROM matches m
-//         INNER JOIN team t1 on t1.id = m.Team_id_home
-//         INNER JOIN team t2 on t2.id = m.Team_id_away
-//         WHERE m.Round_number = 2 AND Tournament_id = ?;
-//     `;
-
-//     const connection = mysql.createConnection({
-//         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-//         user: 'gvoch3v86kyzmy53',
-//         password: 'hmrcywyic6i7uni5',
-//         database: 'sp1hoq0zi7n09fn5',
-//         multipleStatements: true
-//     });
-
-//     connection.connect();
-
-//     connection.query(sql, [id,id],
-//         (error, results, fields) => {
-//             if (error) throw error;
-
-//             res.render('../public/admin/result', {
-//                 title: 'Edit Tournament',
-//                 // round2: null
-//             });
-//         });
-
-//     connection.end();
-
-// });
 
 module.exports = router;
