@@ -33,6 +33,38 @@ SELECT * FROM tournament;
     
 })
 
+router.post('/', function (req, res, next){
+
+    const username = req.body.username;
+    const password = req.body.password;
+    const first = req.body.first;
+    const last = req.body.last;
+
+    const connection = mysql.createConnection({
+        host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user: 'gvoch3v86kyzmy53',
+        password: 'hmrcywyic6i7uni5',
+        database: 'sp1hoq0zi7n09fn5'
+    });
+
+    connection.connect();
+
+    connection.query(`INSERT INTO user(username, password, firstName, lastName) VALUES (?, ?, ?, ?)`,[username, password, first, last]
+    , (error, results, fields) => {
+        if (error) throw error;
+
+        
+        res.json({
+            message: 'Account created!'
+        });
+        
+    });
+
+    connection.end();
+
+
+})
+
 
 router.get('/view', function(req, res, next){
 
