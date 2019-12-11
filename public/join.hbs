@@ -1,0 +1,77 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+
+<h1>{{title}}</h1>
+
+<form>
+    {{#each data}}
+    <div class="form-group">
+        
+        <h4>Tournament Name: {{tname}}</h4>
+        <input type="hidden" id="id" value="{{id}}" />
+    </div>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter Your Username">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="text" class="form-control" id="password" aria-describedby="passwordHelp" placeholder="Enter Your Password">
+    </div>
+    {{/each}}
+    <div class="form-group">
+        <button id="joinButton" class="btn btn-primary">Join</button>
+        <button id="cancelButton" class="btn btn-secondary">Cancel</button>
+    </div>
+    <div id="message" class="alert alert-danger hidden m-2" role="alert">
+        This is a danger alert—check it out!
+    </div>
+    
+</form>
+
+<script>
+    $(document).ready(function() {
+        $("#cancelButton").on('click', function(e) {
+            e.preventDefault();
+            window.location.href = "/home";
+        });
+        $("#joinButton").on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/lab/10/quotes/edit",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "username": $("#username").val(),
+                    "password": $("#password").val(),
+                    "id": $('#id').val();
+                }),
+                success: function(data, status) {
+
+                    if(successful){
+                        window.location.href = "/home";
+                    }
+                    else{
+                        $('#message').html(result.message);
+                        $('#message').show();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                },
+                complete: function(data, status) { //optional, used for debugging purposes
+                    //console.log(status);
+                }
+            });
+        });
+    });
+</script>
