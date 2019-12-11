@@ -41,8 +41,13 @@ router.get('/view', function(req, res, next){
     if(id){
         const sql = `
         SELECT *
+        FROM tournament 
+        LEFT JOIN user on tournament.id = user.tournament_id
+        WHERE tournament.id = ${id}
+        UNION
+        SELECT *
         FROM tournament
-        INNER JOIN user on tournament.id = user.tournament_id
+        RIGHT JOIN user on tournament.id = user.tournament_id
         WHERE tournament.id = ${id};
     `;
         const connection = mysql.createConnection({
@@ -59,6 +64,9 @@ router.get('/view', function(req, res, next){
     
             res.render('../public/view', {
                 title: results[0].tname,
+                status: results[0].status,
+                capacity: results[0].capacity,
+                enrolled: results[0].playercount,
                 tournaments: results
             });
             
