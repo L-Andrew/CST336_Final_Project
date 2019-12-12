@@ -260,10 +260,7 @@ router.post('/join', function(req, res, next){
     const username = req.body.username;
     const password = req.body.password;
     const id = req.body.id;
-    var userId;
-    var playercount;
     var playersArray;
-    let successful = false;
 
     
     const connection = mysql.createConnection({
@@ -282,6 +279,7 @@ router.post('/join', function(req, res, next){
 
     });
 
+    
     connection.query(
         'SELECT playercount FROM tournament WHERE tournament.id=?', [id]
     , (error, results, fields) => {
@@ -293,47 +291,71 @@ router.post('/join', function(req, res, next){
         console.log("playercount");
     });
 
-    connection.query(
-        'SELECT user.id FROM tournament,user WHERE tournament.id=? && tournament.id=user.tournament_id', [id]
-    , (error, results, fields) => {
-        if (error) throw error;
-        
+    function get_info(callback){
+        connection.query(
+            'SELECT user.id FROM tournament,user WHERE tournament.id=? && tournament.id=user.tournament_id', [id]
+        , (error, results, fields) => {
+            if (error) throw error;
+            
+    
+            return callback(results);
+        });
 
+  }
 
-        playersArray=results;
-    });
+  get_info(function(result){
+    if(result.length!=4){
+        return;
+    }
+    playersArray = result;
 
-
-
-
-console.log(playersArray);
-
-console.log(playercount);
-
+    console.log(playersArray);
     var rndIndex=Math.floor(Math.random()*playersArray.length);
-    var random1 = items[rndIndex];
+    var random1 = playersArray[rndIndex];
+    console.log(random1);
     playersArray.splice(rndIndex, 1);
-    rndIndex=Math.floor(Math.random()*playersArray.length)
-    var random2= items[rndIndex];
+    rndIndex=Math.floor(Math.random()*playersArray.length);
+ 
+    var random2= playersArray[rndIndex];
+    console.log(random2.id);
     playersArray.splice(rndIndex, 1);
 
     connection.query( 
-        'INSERT INTO matches(matchDate, user_id_home, user_id_away,user__home_score,user__away_score,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)', ["wfefaefewa",random1,random2,0,0,"live",id,1], // assuming POST
+        'INSERT INTO matches(matchDate, user_id_home, user_id_away,user__home_score,user__away_score,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)', ["jetztaberFürMathis",random1.id,random2.id,0,0,"live",id,1], // assuming POST
         (error, results, fields) => {
             if (error){
                 console.log(error);
             } 
 
-     
         });
+
+        console.log(playersArray);
+        var rndIndex=Math.floor(Math.random()*playersArray.length);
+        var random1 = playersArray[rndIndex];
+        console.log(random1);
+        playersArray.splice(rndIndex, 1);
+        rndIndex=Math.floor(Math.random()*playersArray.length);
+     
+        var random2= playersArray[rndIndex];
+        console.log(random2.id);
+        playersArray.splice(rndIndex, 1);
+        connection.query( 
+            'INSERT INTO matches(matchDate, user_id_home, user_id_away,user__home_score,user__away_score,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)', ["jetztaberFürMathis",random1.id,random2.id,0,0,"live",id,1], // assuming POST
+            (error, results, fields) => {
+                if (error){
+                    console.log(error);
+                } 
+    
+            });
 
    
 
 
-        console.log("fawefewaf"+userId+playercount);
+      
+ });
 
 
-    connection.end();
+
 })
 
 module.exports = router;
