@@ -225,6 +225,9 @@ router.post('/join', function(req, res, next){
     const username = req.body.username;
     const password = req.body.password;
     const id = req.body.id;
+    var userId;
+    var playercount;
+    var playersArray;
     let successful = false;
 
     
@@ -241,14 +244,59 @@ router.post('/join', function(req, res, next){
         'UPDATE user SET tournament_id = ? WHERE username = ? && password = ?', [id, username, password]
     , (error, results, fields) => {
         if (error) throw error;
+
+    });
+
+    connection.query(
+        'SELECT playercount FROM tournament WHERE tournament.id=?', [id]
+    , (error, results, fields) => {
+        if (error) throw error;
         
 
-        res.json({
-            successful: true
-        })
-        
-        
+
+        playercount=results[0].playercount;
+        console.log("playercount");
     });
+
+    connection.query(
+        'SELECT user.id FROM tournament,user WHERE tournament.id=? && tournament.id=user.tournament_id', [id]
+    , (error, results, fields) => {
+        if (error) throw error;
+        
+
+
+        playersArray=results;
+    });
+
+
+
+
+console.log(playersArray);
+
+console.log(playercount);
+
+    var rndIndex=Math.floor(Math.random()*playersArray.length);
+    var random1 = items[rndIndex];
+    playersArray.splice(rndIndex, 1);
+    rndIndex=Math.floor(Math.random()*playersArray.length)
+    var random2= items[rndIndex];
+    playersArray.splice(rndIndex, 1);
+
+    connection.query( 
+        'INSERT INTO matches(matchDate, user_id_home, user_id_away,user__home_score,user__away_score,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)', ["wfefaefewa",random1,random2,0,0,"live",id,1], // assuming POST
+        (error, results, fields) => {
+            if (error){
+                console.log(error);
+            } 
+
+     
+        });
+
+   
+
+
+        console.log("fawefewaf"+userId+playercount);
+
 
     connection.end();
 })
