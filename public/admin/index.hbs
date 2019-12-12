@@ -1,5 +1,4 @@
-<h1>{{title}}</h1>
-<button id="logoutButton" class="btn btn-warning float-right">Logout</button>
+<h1 class="float-left">{{title}}</h1><button id="logoutButton" class="btn btn-warning float-right">Logout</button>
 
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -27,7 +26,7 @@
         {{/each}}
     </tbody>
 </table>
-
+<button id="bored" class="btn btn-success">I'm bored</button>
 <div id="twitch-embed"></div>
 
 <!-- Load the Twitch embed script -->
@@ -44,6 +43,10 @@
 
 <script>
     $(document).ready(function() {
+        $('#twitch-embed').toggle();
+        $("#bored").on('click', function(e) {
+            $('#twitch-embed').toggle();
+        });
         $('#logoutButton').on('click', function(e) {
             e.preventDefault();
             $.ajax({

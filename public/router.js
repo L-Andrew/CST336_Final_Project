@@ -33,7 +33,7 @@ SELECT * FROM tournament;
     
 })
 
-router.post('/', function (req, res, next){
+router.post('/home', function (req, res, next){
 
     const username = req.body.username;
     const password = req.body.password;
