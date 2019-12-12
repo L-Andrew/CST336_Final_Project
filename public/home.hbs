@@ -5,31 +5,25 @@
 </style>
 
 <h1>{{title}}</h1>
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light float-right">
     <form class="form-inline">
-        <div class="row">
-            <div class="col-auto">
-                <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button id="submit" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group mb-3 my-sm-0 mr-sm-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="statusFilter">Status</label>
             </div>
-            <div class="col-auto">
-                <div class="input-group mb-3 my-sm-0 mr-sm-2">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="statusFilter">Status</label>
-                    </div>
-                    <select class="custom-select" id="statusFilter">
-                        <option selected>All</option>
-                        <option value="Ended">Ended</option>
-                        <option value="Live">Live</option>
-                        <option value="Waiting for players">Waiting for players</option>
-                    </select>
-                </div>
-            </div>
+            <select class="custom-select" id="statusFilter">
+                <option value="" selected>All</option>
+                <option value="Ended">Ended</option>
+                <option value="Live">Live</option>
+                <option value="Waiting for players">Waiting for players</option>
+            </select>
         </div>
+        <button id="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 </nav>
 
-<table class="table table-striped">
+<table class="table table-striped" id="resultTable">
     <thead class="thead-dark">
         <tr>
             <th>Tournament Name</th>
@@ -43,7 +37,7 @@
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tbody">
         {{#each tournaments}}
         <tr>
             <td class="w-50">{{tname}}</td>
@@ -129,6 +123,51 @@
                 },
                 complete: function(data, status) { //optional, used for debugging purposes
                     //console.log(status);
+                }
+            });
+        });
+
+        $("#search").on('click', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: "/search",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "keyword": $("#keyword").val(),
+                    "statusFilter": $("#statusFilter").val()
+                }),
+                success: function(data, status) {
+                    console.log("success")
+                    // console.log(data.message)
+                    // $("#tbody").remove();
+                    // console.log("each?")
+                    // $.each(result, function(index, obj) {
+                    //     console.log("each")
+                    //     console.log(index)
+                    //     console.log(obj)
+                    //     $('#resultTable tr:last').after(`
+                    //         <tr>
+                    //         <td class="w-50">${obj.tname}</td>
+                    //         <td class="w-25">${obj.playercount}/${obj.capacity}</td>
+                    //         <td class="w-25">${obj.status}</td>
+                    //         <td>
+                    //             <a class="btn btn-secondary" href="/view?id=${obj.id}">View</a>
+                    //         </td>
+                    //         <td>
+                    //             <a class="btn btn-primary" href="/join?id=${obj.id}">Join</a>
+                    //         </td>
+                    //         </tr>
+                    //     `);
+                    // });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                },
+                complete: function(data, status) { //optional, used for debugging purposes
+                    console.log(status);
                 }
             });
         });

@@ -383,12 +383,7 @@ router.post('/join', function(req, res, next) {
 })
 
 
-router.post('/filter', function(req, res, next) {
-
-    const query = req.body.username;
-    const password = req.body.password;
-    const first = req.body.first;
-    const last = req.body.last;
+router.post('/search', function(req, res, next) {
 
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
@@ -396,23 +391,61 @@ router.post('/filter', function(req, res, next) {
         password: 'hmrcywyic6i7uni5',
         database: 'sp1hoq0zi7n09fn5'
     });
-
-    connection.connect();
     
-    connection.query(`SELECT * FROM tournament WHERE ${req.body.query};`, (error, results, fields) => {
-        if (error) throw error;
+    var where = "";
+    var k1 = "";
+    var k2 = "";
+    var s1 = "";
+    var s2 = "";
+    
+    if (req.body.keyword.length) {
+        where = "WHERE"
+        var k = `tname LIKE "%${req.body.keyword}%" OR firstName LIKE "%${req.body.keyword}%" OR lastName LIKE "%${req.body.keyword}%"`
+        k1 = `(${k}` + ` OR t.teamname LIKE "%${req.body.keyword}%")`
+        k2 = `AND (${k})`
+    }
+    
+    if (req.body.statusFilter.length) {
+        s2 += "AND ";
+        if (where.length) {
+            s1 += "AND "
+        }
+        where = "WHERE"
+        s1 += "status LIKE '" + req.body.statusFilter + "'";
+        s2 += "status LIKE '" + req.body.statusFilter + "'";
+    }
+    
+    var sql = `
+    SELECT tournament.id, tname, capacity, status, playercount, firstName, lastName, t.teamname
+    FROM tournament 
+    INNER JOIN user on tournament.id = user.tournament_id
+    INNER JOIN team t on t.id = user.team_id
+    ${where} ${k1} ${s1}
+    UNION
+    SELECT tournament.id, tname, capacity, status, playercount, firstName, lastName, NULL AS teamname
+    FROM tournament 
+    INNER JOIN user on tournament.id = user.tournament_id
+    WHERE team_id IS NULL ${k2} ${s2}
+    `;
+    console.log(sql)
 
-
-        res.json({
-            message: 'Account created!'
+    if (sql.length) {
+        connection.connect();
+        
+        connection.query(sql, (error, results, fields) => {
+            if (error) throw error;
+            console.log(results)
+            res.json({
+                data: results,
+                message: 'hello'
+            });
+    
         });
+    
+        connection.end();
+    }
 
-    });
-
-    connection.end();
-
-
-})
+});
 
 
 module.exports = router;
