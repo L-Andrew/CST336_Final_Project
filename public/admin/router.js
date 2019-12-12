@@ -114,7 +114,6 @@ router.get('/edit', function(req, res, next) {
             });
 
         connection.end();
-
     }
     else {
         res.render('../public/admin/edit', {
@@ -169,8 +168,6 @@ router.get('/delete', function(req, res, next) {
     if (!id || id.length === 0) {
         return next(new Error('nothing to delete'));
     }
-    // TODO: Lookup the data and provide results to the view 
-    // to show an existing quote
 
     const sql = `
 SELECT * FROM tournament WHERE id = ?;
@@ -205,9 +202,6 @@ router.delete('/delete', function(req, res, next) {
         return next(new Error('nothing to delete'));
     }
 
-    // TODO: check if there are dependent records...i.e. favorites
-    // If there are, error
-
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user: 'gvoch3v86kyzmy53',
@@ -226,6 +220,29 @@ router.delete('/delete', function(req, res, next) {
             });
         });
 
+
+    connection.end();
+
+});
+
+router.post('/editResult', function(req, res, next) {
+
+    const connection = mysql.createConnection({
+        host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user: 'gvoch3v86kyzmy53',
+        password: 'hmrcywyic6i7uni5',
+        database: 'sp1hoq0zi7n09fn5',
+        multipleStatements: true
+    });
+    
+    const sql = `UPDATE matches SET winning_user_id = ? WHERE id = ?;UPDATE matches SET winning_user_id = ? WHERE id = ?;UPDATE matches SET winning_user_id = ? WHERE id = ?;`;
+
+    connection.connect();
+
+    connection.query(sql, [req.body.aWinner, req.body.aId, req.body.bWinner, req.body.bId, req.body.Winner, req.body.wId],
+        (error, results, fields) => {
+            if (error) throw error;
+        });
 
     connection.end();
 

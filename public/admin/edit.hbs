@@ -221,6 +221,38 @@
                     //console.log(status);
                 }
             });
+            if ($("#tournament").length) {
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/editResult",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "aId":     $("#round1Aid").text(),
+                        "aWinner": $("#round1WinnerA").val(),
+                        "bId":     $("#round1Bid").text(),
+                        "bWinner": $("#round1WinnerB").val(),
+                        "wId":     $("#round2id").text(),
+                        "Winner":  $("#round2Winner").val()
+                    }),
+                    success: function(data, status) {
+                        $("#id").val(data.id);
+                        if (data.id) {
+                            setTimeout(function() {
+                                window.location.href = "/admin";
+                            }, 2000);
+                        } else {
+                            window.location.href = "/admin";
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    },
+                    complete: function(data, status) { //optional, used for debugging purposes
+                        //console.log(status);
+                    }
+                });
+            }
         });
         $("#round1WinnerA").on('change', function() {
             $("#round2WinnerA").html($("#round1WinnerA option:selected").text());
