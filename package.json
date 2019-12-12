@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/nodemon ./app.js",
+    "start": "node ./bin/www",
     "ugle": "ls -al"
   },
   "dependencies": {
