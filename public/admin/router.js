@@ -70,7 +70,21 @@ router.get('/edit', function(req, res, next) {
         FROM user u
         INNER JOIN team t on t.id = u.team_id
         ) t3 on t3.id = m.winning_user_id
-        WHERE m.Round_number = 1 AND Tournament_id = ?;
+        WHERE m.Round_number = 1 AND Tournament_id = ${id}
+        UNION
+        SELECT m.id, m.user_id_home AS User1_name, t1.teamname AS Team1_name, m.user_id_away AS User2_name, t2.teamname AS Team2_name, m.Round_number, m.Winning_user_id, NULL AS Winner
+        FROM matches m
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t1 on t1.id = m.user_id_home
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t2 on t2.id = m.user_id_away
+        WHERE m.Round_number = 1 AND Tournament_id = ${id} AND m.winning_user_id IS NULL;
         SELECT m.id, m.user_id_home AS User1_name, t1.teamname AS Team1_name, m.user_id_away AS User2_name, t2.teamname AS Team2_name, m.Round_number, m.Winning_user_id, t3.teamname AS Winner
         FROM matches m
         INNER JOIN (
@@ -88,7 +102,21 @@ router.get('/edit', function(req, res, next) {
         FROM user u
         INNER JOIN team t on t.id = u.team_id
         ) t3 on t3.id = m.winning_user_id
-        WHERE m.Round_number = 2 AND Tournament_id = ?;
+        WHERE m.Round_number = 2 AND Tournament_id = ${id}
+        UNION
+        SELECT m.id, m.user_id_home AS User1_name, t1.teamname AS Team1_name, m.user_id_away AS User2_name, t2.teamname AS Team2_name, m.Round_number, m.Winning_user_id, NULL AS Winner
+        FROM matches m
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t1 on t1.id = m.user_id_home
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t2 on t2.id = m.user_id_away
+        WHERE m.Round_number = 2 AND Tournament_id = ${id} AND m.winning_user_id IS NULL;
         `;
 
         const connection = mysql.createConnection({
@@ -101,7 +129,7 @@ router.get('/edit', function(req, res, next) {
 
         connection.connect();
 
-        connection.query(sql, [id,id,id],
+        connection.query(sql, [id],
             (error, results, fields) => {
                 if (error) throw error;
 
