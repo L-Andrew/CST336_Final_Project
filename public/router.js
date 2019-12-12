@@ -377,6 +377,10 @@ router.post('/join', function(req, res, next) {
 
     });
 
+    res.json({
+        successful: true
+    });
+
 
 })
 
