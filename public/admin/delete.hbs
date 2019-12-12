@@ -7,12 +7,11 @@
 <form>
     <div class="form-group">
         <label for="authorId">Tournament ID</label>
-        <input type="text" readonly class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter tournament ID" value={{data.id}}>
-        <input type="hidden" id="quoteId" value="{{data.id}}" />
+        <input type="text" readonly class="form-control" id="authorId" aria-describedby="authorIdHelp" value={{data.id}}>
     </div>
     <div class="form-group">
         <label for="quote">Tournament name</label>
-        <textarea class="form-control" readonly id="quote" aria-describedby="quoteHelp" placeholder="Enter Quote Text">{{data.tname}}</textarea>
+        <textarea class="form-control" readonly id="quote" aria-describedby="quoteHelp">{{data.tname}}</textarea>
     </div>
         <div class="form-group">
         <label for="category">Playercount</label>
@@ -20,7 +19,7 @@
     </div>
     <div class="form-group">
         <label for="category">Capacity</label>
-        <input type="text" class="form-control" readonly id="category" aria-describedby="categoryHelp" placeholder="Enter Quote Category" value={{data.capacity}}>
+        <input type="text" class="form-control" readonly id="category" aria-describedby="categoryHelp" value={{data.capacity}}>
     </div>
     <div class="form-group">
         <button id="deleteButton" class="btn btn-danger">Delete</button>
@@ -42,7 +41,7 @@
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "id": $("#quoteId").val(),
+                    "id": $("#authorId").val(),
                 }),
                 success: function(data, status) {
                     $("#id").val(data.id);

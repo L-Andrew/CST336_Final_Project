@@ -176,10 +176,12 @@
         <button id="saveButton" class="btn btn-primary">Save</button>
         <button id="cancelButton" class="btn btn-secondary">Cancel</button>
     </div>
-    <div class="form-group">
-        <input id="id" type="text" class="form-control" aria-describedby="idHelp" disabled>
-        <small id="idHelp" class="form-text text-muted">Your Tournament ID</small>
-    </div>
+    {{#unless data}}
+        <div class="form-group">
+            <small id="idHelp" class="form-text text-muted">Your Tournament ID</small>
+            <input id="id" type="text" class="form-control" aria-describedby="idHelp" disabled>
+        </div>
+    {{/unless}}
 </form>
 
 <script>
@@ -203,9 +205,14 @@
                     "playercount": 0
                 }),
                 success: function(data, status) {
-                    console.log(data);
                     $("#id").val(data.id);
-                    window.location.href = "/admin";
+                    if (data.id) {
+                        setTimeout(function() {
+                            window.location.href = "/admin";
+                        }, 2000);
+                    } else {
+                        window.location.href = "/admin";
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

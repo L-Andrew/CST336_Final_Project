@@ -104,7 +104,6 @@ router.get('/edit', function(req, res, next) {
         connection.query(sql, [id,id,id],
             (error, results, fields) => {
                 if (error) throw error;
-                console.log(results[0]);
 
                 res.render('../public/admin/edit', {
                     title: 'Edit Tournament',
@@ -126,7 +125,6 @@ router.get('/edit', function(req, res, next) {
 });
 
 router.post('/edit', function(req, res, next) {
-    console.log(req.body);
 
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
@@ -142,6 +140,7 @@ router.post('/edit', function(req, res, next) {
             'UPDATE tournament SET id = ?, tname = ?, capacity = ?, status=? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity, req.body.status, req.body.id], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
+                console.log(results.id);
                 res.json({
                     id: results.id
                 });
@@ -152,6 +151,7 @@ router.post('/edit', function(req, res, next) {
             'INSERT INTO tournament(id, tname, capacity,playercount,status) VALUES (?, ?, ?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity, req.body.playercount, req.body.status], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
+                console.log(results.insertId);
                 res.json({
                     id: results.insertId
                 });
