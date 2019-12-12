@@ -225,6 +225,7 @@ router.post('/join', function(req, res, next){
     const username = req.body.username;
     const password = req.body.password;
     const id = req.body.id;
+    let successful = false;
 
     
     const connection = mysql.createConnection({
@@ -241,11 +242,9 @@ router.post('/join', function(req, res, next){
     , (error, results, fields) => {
         if (error) throw error;
         
-        console.log("results:", results)
 
-        res.render('../public/join',{
-            title: 'Join Tournament',
-            data: results
+        res.json({
+            successful: true
         })
         
         

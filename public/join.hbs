@@ -29,7 +29,7 @@
     {{/each}}
     <div class="form-group">
         <button id="joinButton" class="btn btn-primary">Join</button>
-        <button id="cancelButton" class="btn btn-secondary">Cancel</button>
+        <a class="btn btn-secondary" href="/home">Cancel</a>
     </div>
     <div id="message" class="alert alert-danger hidden m-2" role="alert">
         This is a danger alert—check it out!
@@ -39,25 +39,22 @@
 
 <script>
     $(document).ready(function() {
-        $("#cancelButton").on('click', function(e) {
-            e.preventDefault();
-            window.location.href = "/home";
-        });
+        
         $("#joinButton").on('click', function(e) {
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "/lab/10/quotes/edit",
+                url: "/home/join",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify({
                     "username": $("#username").val(),
                     "password": $("#password").val(),
-                    "id": $('#id').val();
+                    "id": $('#id').val()
                 }),
                 success: function(data, status) {
 
-                    if(successful){
+                    if(data.successful){
                         window.location.href = "/home";
                     }
                     else{
