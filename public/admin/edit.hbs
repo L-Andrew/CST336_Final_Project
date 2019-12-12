@@ -108,12 +108,16 @@
                 <li class="spacer">&nbsp;</li>
             </ul>
             <ul class="round round-2">
-                {{#if round2}}
+                {{!--{{#if round2}}--}}
                 <li class="spacer">&nbsp;</li>
                 <li class="game game-top">
                     <span id="round1Aid" hidden>{{round1.0.id}}</span>
                     <select id="round1WinnerA" class="round1Winners">
-                        <option value={{round1.1.Winning_user_id}}>{{round1.0.Winner}}</option>
+                        {{#if round1.0.Winner}}
+                            <option value={{round1.0.Winning_user_id}}>{{round1.0.Winner}}</option>
+                        {{else}}
+                            <option value="">Select winner</option>
+                        {{/if}}
                         <option value={{round1.0.User1_name}}>{{round1.0.Team1_name}}</option>
                         <option value={{round1.0.User2_name}}>{{round1.0.Team2_name}}</option>
                     </select>
@@ -122,31 +126,15 @@
                 <li class="game game-bottom ">
                     <span id="round1Bid" hidden>{{round1.1.id}}</span>
                     <select id="round1WinnerB" class="round1Winners">
-                        <option value={{round1.1.Winning_user_id}}>{{round1.1.Winner}}</option>
+                        {{#if round1.1.Winner}}
+                            <option value={{round1.1.Winning_user_id}}>{{round1.1.Winner}}</option>
+                        {{else}}
+                            <option value="">Select winner</option>
+                        {{/if}}
                         <option value={{round1.1.User1_name}}>{{round1.1.Team1_name}}</option>
                         <option value={{round1.1.User2_name}}>{{round1.1.Team2_name}}</option>
                     </select>
                 </li>
-                {{else}}
-                <li class="spacer">&nbsp;</li>
-                <li class="game game-top">
-                    <span id="round1Aid" hidden>{{round1.0.id}}</span>
-                    <select id="round1WinnerA" class="round1Winners">
-                        <option>Select winner</option>
-                        <option value={{round1.0.User1_name}}>{{round1.0.Team1_name}}</option>
-                        <option value={{round1.0.User2_name}}>{{round1.0.Team2_name}}</option>
-                    </select>
-                </li>
-                <li class="game game-spacer">&nbsp;</li>
-                <li class="game game-bottom ">
-                    <span id="round1Bid" hidden>{{round1.0.id}}</span>
-                    <select id="round1WinnerB" class="round1Winners">
-                        <option>Select winner</option>
-                        <option value={{round1.1.User1_name}}>{{round1.1.Team1_name}}</option>
-                        <option value={{round1.1.User2_name}}>{{round1.1.Team2_name}}</option>
-                    </select>
-                </li>
-                {{/if}}
                 <li class="spacer">&nbsp;</li>
             </ul>
             <ul class="round round-3">
@@ -154,14 +142,14 @@
                 <li class="game game-top">
                     <span id="round2id" hidden>{{round2.0.id}}</span>
                     <select id="round2Winner" class="round2Winners">
-                    {{#if round2}}
+                    {{#if round2.0.Winner}}
                         <option value={{round2.0.Winning_user_id}}>{{round2.0.Winner}}</option>
                         <option id="round2WinnerA" value={{round2.0.User1_name}}>{{round2.0.Team1_name}}</option>
                         <option id="round2WinnerB" value={{round2.0.User2_name}}>{{round2.0.Team2_name}}</option>
                     {{else}}
-                        <option>Select winner</option>
-                        <option id="round2WinnerA"></option>
-                        <option id="round2WinnerB"></option>
+                        <option value="">Select winner</option>
+                        <option id="round2WinnerA" value={{round1.0.Winning_user_id}}>{{round1.0.Winner}}</option>
+                        <option id="round2WinnerB" value={{round1.1.Winning_user_id}}>{{round1.1.Winner}}</option>
                     {{/if}}
                 </select>
                 </li>
@@ -231,7 +219,8 @@
                         "bId":     $("#round1Bid").text(),
                         "bWinner": $("#round1WinnerB").val(),
                         "wId":     $("#round2id").text(),
-                        "Winner":  $("#round2Winner").val()
+                        "Winner":  $("#round2Winner").val(),
+                        "tournament_id": $("#authorId").val()
                     }),
                     success: function(data, status) {
                         $("#id").val(data.id);

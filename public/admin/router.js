@@ -167,7 +167,6 @@ router.post('/edit', function(req, res, next) {
             'UPDATE tournament SET id = ?, tname = ?, capacity = ?, status=? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity, req.body.status, req.body.id], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
-                console.log(results.id);
                 res.json({
                     id: results.id
                 });
@@ -178,7 +177,6 @@ router.post('/edit', function(req, res, next) {
             'INSERT INTO tournament(id, tname, capacity,playercount,status) VALUES (?, ?, ?, ?, ?)', [req.body.id, req.body.tname, req.body.capacity, req.body.playercount, req.body.status], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
-                console.log(results.insertId);
                 res.json({
                     id: results.insertId
                 });
@@ -254,6 +252,7 @@ router.delete('/delete', function(req, res, next) {
 });
 
 router.post('/editResult', function(req, res, next) {
+    console.log(req.body)
 
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
@@ -262,17 +261,55 @@ router.post('/editResult', function(req, res, next) {
         database: 'sp1hoq0zi7n09fn5',
         multipleStatements: true
     });
+    console.log("created connection")
+
+    if (!req.body.wId.length && req.body.bWinner.length && req.body.aWinner.length) {
+        console.log("if")
+        var sql = `INSERT INTO matches(user_id_home, user_id_away, tournament_id, round_number) VALUES (${req.body.aWinner}, ${req.body.bWinner}, ${req.body.tournament_id}, 2);`
+
+        if (req.body.aWinner.length) {
+            sql += `UPDATE matches SET winning_user_id = ${req.body.aWinner} WHERE id = ${req.body.aId};`
+        }
+        if (req.body.bWinner.length) {
+            sql += `UPDATE matches SET winning_user_id = ${req.body.bWinner} WHERE id = ${req.body.bId};`
+        }
+
+
+        console.log("insert sql"+sql)
+        connection.connect();
+
+        connection.query(sql,
+            (error, results, fields) => {
+                if (error) throw error;
+            });
+        connection.end();
+    } else {
+        console.log("else")
+        var sql = '';
+
+        if (req.body.Winner.length) {
+            sql += `UPDATE matches SET winning_user_id = ${req.body.Winner} WHERE id = ${req.body.wId};`
+        }
+        if (req.body.aWinner.length) {
+            sql += `UPDATE matches SET winning_user_id = ${req.body.aWinner} WHERE id = ${req.body.aId};`
+        }
+        if (req.body.bWinner.length) {
+            sql += `UPDATE matches SET winning_user_id = ${req.body.bWinner} WHERE id = ${req.body.bId};`
+        }
+
+        console.log("update sql"+sql)
+        
+        if (sql.length) {
+            connection.connect();
     
-    const sql = `UPDATE matches SET winning_user_id = ? WHERE id = ?;UPDATE matches SET winning_user_id = ? WHERE id = ?;UPDATE matches SET winning_user_id = ? WHERE id = ?;`;
-
-    connection.connect();
-
-    connection.query(sql, [req.body.aWinner, req.body.aId, req.body.bWinner, req.body.bId, req.body.Winner, req.body.wId],
-        (error, results, fields) => {
-            if (error) throw error;
-        });
-
-    connection.end();
+            connection.query(sql,
+                (error, results, fields) => {
+                    if (error) throw error;
+                });
+            connection.end();
+        }
+    }
+    console.log("end")
 
 });
 
