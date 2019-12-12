@@ -140,28 +140,34 @@
                     "statusFilter": $("#statusFilter").val()
                 }),
                 success: function(data, status) {
-                    $("#tbody").remove();
-                    $.each(result, function() {
-                        $('#resultTable tr:last').after(`
-                            <tr>
-                            <td class="w-50">${tname}</td>
-                            <td class="w-25">${playercount}/${capacity}</td>
-                            <td class="w-25">${status}</td>
-                            <td>
-                                <a class="btn btn-secondary" href="/view?id=${id}">View</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" href="/join?id=${id}">Join</a>
-                            </td>
-                            </tr>
-                    `);
-                    });
+                    console.log("success")
+                    // console.log(data.message)
+                    // $("#tbody").remove();
+                    // console.log("each?")
+                    // $.each(result, function(index, obj) {
+                    //     console.log("each")
+                    //     console.log(index)
+                    //     console.log(obj)
+                    //     $('#resultTable tr:last').after(`
+                    //         <tr>
+                    //         <td class="w-50">${obj.tname}</td>
+                    //         <td class="w-25">${obj.playercount}/${obj.capacity}</td>
+                    //         <td class="w-25">${obj.status}</td>
+                    //         <td>
+                    //             <a class="btn btn-secondary" href="/view?id=${obj.id}">View</a>
+                    //         </td>
+                    //         <td>
+                    //             <a class="btn btn-primary" href="/join?id=${obj.id}">Join</a>
+                    //         </td>
+                    //         </tr>
+                    //     `);
+                    // });
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
                 },
                 complete: function(data, status) { //optional, used for debugging purposes
-                    //console.log(status);
+                    console.log(status);
                 }
             });
         });

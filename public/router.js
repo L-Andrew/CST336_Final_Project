@@ -401,8 +401,8 @@ router.post('/search', function(req, res, next) {
     if (req.body.keyword.length) {
         where = "WHERE"
         var k = `tname LIKE "%${req.body.keyword}%" OR firstName LIKE "%${req.body.keyword}%" OR lastName LIKE "%${req.body.keyword}%"`
-        k1 = `${k}` + ` OR t.teamname LIKE "%${req.body.keyword}%"`
-        k2 = `AND ${k}`
+        k1 = `(${k}` + ` OR t.teamname LIKE "%${req.body.keyword}%")`
+        k2 = `AND (${k})`
     }
     
     if (req.body.statusFilter.length) {
@@ -433,11 +433,11 @@ router.post('/search', function(req, res, next) {
         connection.connect();
         
         connection.query(sql, (error, results, fields) => {
-            console.log(results)
             if (error) throw error;
-            
+            console.log(results)
             res.json({
-                results: results
+                data: results,
+                message: 'hello'
             });
     
         });
