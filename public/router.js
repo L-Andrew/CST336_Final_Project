@@ -416,13 +416,13 @@ router.post('/search', function(req, res, next) {
     }
     
     var sql = `
-    SELECT tournament.id, tname, capacity, status, playercount, firstName, lastName, t.teamname
+    SELECT tournament.id, tname, capacity, status, playercount
     FROM tournament 
     INNER JOIN user on tournament.id = user.tournament_id
     INNER JOIN team t on t.id = user.team_id
     ${where} ${k1} ${s1}
     UNION
-    SELECT tournament.id, tname, capacity, status, playercount, firstName, lastName, NULL AS teamname
+    SELECT tournament.id, tname, capacity, status, playercount
     FROM tournament 
     INNER JOIN user on tournament.id = user.tournament_id
     WHERE team_id IS NULL ${k2} ${s2}
@@ -436,8 +436,7 @@ router.post('/search', function(req, res, next) {
             if (error) throw error;
             console.log(results)
             res.json({
-                data: results,
-                message: 'hello'
+                results: results,
             });
     
         });
