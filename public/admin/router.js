@@ -261,21 +261,23 @@ router.post('/editResult', function(req, res, next) {
         database: 'sp1hoq0zi7n09fn5',
         multipleStatements: true
     });
-    console.log("created connection")
-
+    var sql = '';
     if (!req.body.wId.length && req.body.bWinner.length && req.body.aWinner.length) {
-        console.log("if")
         var sql = `INSERT INTO matches(user_id_home, user_id_away, tournament_id, round_number) VALUES (${req.body.aWinner}, ${req.body.bWinner}, ${req.body.tournament_id}, 2);`
+    }
+    if (req.body.wId.length && req.body.Winner.length) {
+        sql += `UPDATE matches SET winning_user_id = ${req.body.Winner} WHERE id = ${req.body.wId};`
+    }
+    if (req.body.aId.length && req.body.aWinner.length) {
+        sql += `UPDATE matches SET winning_user_id = ${req.body.aWinner} WHERE id = ${req.body.aId};`
+    }
+    if (req.body.bId.length && req.body.bWinner.length) {
+        sql += `UPDATE matches SET winning_user_id = ${req.body.bWinner} WHERE id = ${req.body.bId};`
+    }
 
-        if (req.body.aWinner.length) {
-            sql += `UPDATE matches SET winning_user_id = ${req.body.aWinner} WHERE id = ${req.body.aId};`
-        }
-        if (req.body.bWinner.length) {
-            sql += `UPDATE matches SET winning_user_id = ${req.body.bWinner} WHERE id = ${req.body.bId};`
-        }
+    console.log("sql" + sql)
 
-
-        console.log("insert sql"+sql)
+    if (sql.length) {
         connection.connect();
 
         connection.query(sql,
@@ -283,31 +285,6 @@ router.post('/editResult', function(req, res, next) {
                 if (error) throw error;
             });
         connection.end();
-    } else {
-        console.log("else")
-        var sql = '';
-
-        if (req.body.Winner.length) {
-            sql += `UPDATE matches SET winning_user_id = ${req.body.Winner} WHERE id = ${req.body.wId};`
-        }
-        if (req.body.aWinner.length) {
-            sql += `UPDATE matches SET winning_user_id = ${req.body.aWinner} WHERE id = ${req.body.aId};`
-        }
-        if (req.body.bWinner.length) {
-            sql += `UPDATE matches SET winning_user_id = ${req.body.bWinner} WHERE id = ${req.body.bId};`
-        }
-
-        console.log("update sql"+sql)
-        
-        if (sql.length) {
-            connection.connect();
-    
-            connection.query(sql,
-                (error, results, fields) => {
-                    if (error) throw error;
-                });
-            connection.end();
-        }
     }
     console.log("end")
 
