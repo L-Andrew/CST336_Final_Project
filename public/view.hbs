@@ -1,8 +1,8 @@
-<h1>{{title}}</h1>
+<h1>{{tournaments.0.tname}}</h1>
 
-<div>Status: {{status}}</div>
-<div>Enrolled: {{enrolled}}</div>
-<div>Capacity: {{capacity}}</div>
+<div>Status: {{tournaments.0.status}}</div>
+<div>Enrolled: {{tournaments.0.playercount}}</div>
+<div>Capacity: {{tournaments.0.capacity}}</div>
 
 <hr>
 
@@ -12,5 +12,115 @@
 {{/each}}
 
 <br><br>
+
+{{#if round1}}
+    <style>
+        main {
+            display: flex;
+            flex-direction: row;
+        }
+    
+        .round {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 200px;
+            list-style: none;
+            padding: 0;
+        }
+    
+        .round .spacer {
+            flex-grow: 1;
+        }
+    
+        .round .spacer:first-child,
+        .round .spacer:last-child {
+            flex-grow: .5;
+        }
+    
+        .round .game-spacer {
+            flex-grow: 1;
+        }
+    
+        /*
+     *  General Styles
+    */
+    
+        body {
+            font-family: sans-serif;
+            font-size: small;
+            padding: 10px;
+            line-height: 1.4em;
+        }
+    
+        li.game {
+            padding-left: 20px;
+        }
+    
+        li.game.winner {
+            font-weight: bold;
+        }
+    
+        li.game span {
+            float: right;
+            margin-right: 5px;
+        }
+    
+        li.game-top {
+            border-bottom: 1px solid #aaa;
+        }
+    
+        li.game-spacer {
+            border-right: 1px solid #aaa;
+            min-height: 40px;
+        }
+    
+        li.game-bottom {
+            border-top: 1px solid #aaa;
+        }
+    </style>
+    <main id="tournament">
+        <ul class="round round-1">
+            {{#each round1}}
+            <li class="spacer">&nbsp;</li>
+            <li class="game game-top">{{Team1_name}}</li>
+            <li class="game game-spacer">&nbsp;</li>
+            <li class="game game-bottom">{{Team2_name}}</li>
+            {{/each}}
+            <li class="spacer">&nbsp;</li>
+        </ul>
+        <ul class="round round-2">
+            {{#if round2}}
+            <li class="spacer">&nbsp;</li>
+            <li class="game game-top">{{round1.0.Winner}}
+            </li>
+            <li class="game game-spacer">&nbsp;</li>
+            <li class="game game-bottom ">{{round1.1.Winner}}
+            </li>
+            {{else}}
+            <li class="spacer">&nbsp;</li>
+            <li class="game game-top">_No_Winner_Yet_
+            </li>
+            <li class="game game-spacer">&nbsp;</li>
+            <li class="game game-bottom ">_No_Winner_Yet_
+            </li>
+            {{/if}}
+            <li class="spacer">&nbsp;</li>
+        </ul>
+        <ul class="round round-3">
+            <li class="spacer">&nbsp;</li>
+            <li class="game game-top">
+                {{#if round2}}
+                    {{round2.0.Winner}}
+                {{else}}
+                    _No_Winner_Yet_
+                {{/if}}
+            </select>
+            </li>
+            <li class="spacer">&nbsp;</li>
+        </ul>
+    </main>
+    <br><br>
+{{/if}}
 
 <a class="btn btn-info" href="/home">Go Back</a>
