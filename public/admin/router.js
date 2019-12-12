@@ -252,7 +252,6 @@ router.delete('/delete', function(req, res, next) {
 });
 
 router.post('/editResult', function(req, res, next) {
-    console.log(req.body)
 
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
@@ -275,8 +274,6 @@ router.post('/editResult', function(req, res, next) {
         sql += `UPDATE matches SET winning_user_id = ${req.body.bWinner} WHERE id = ${req.body.bId};`
     }
 
-    console.log("sql" + sql)
-
     if (sql.length) {
         connection.connect();
 
@@ -286,7 +283,6 @@ router.post('/editResult', function(req, res, next) {
             });
         connection.end();
     }
-    console.log("end")
 
 });
 
