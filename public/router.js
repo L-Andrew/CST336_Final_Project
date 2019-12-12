@@ -81,12 +81,49 @@ router.get('/view', function(req, res, next){
         FROM tournament
         RIGHT JOIN user on tournament.id = user.tournament_id
         WHERE tournament.id = ${id};
+        SELECT m.id, m.user_id_home AS User1_name, t1.teamname AS Team1_name, m.user_id_away AS User2_name, t2.teamname AS Team2_name, m.Round_number, m.Winning_user_id, t3.teamname AS Winner
+        FROM matches m
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t1 on t1.id = m.user_id_home
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t2 on t2.id = m.user_id_away
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t3 on t3.id = m.winning_user_id
+        WHERE m.Round_number = 1 AND Tournament_id = ${id};
+        SELECT m.id, m.user_id_home AS User1_name, t1.teamname AS Team1_name, m.user_id_away AS User2_name, t2.teamname AS Team2_name, m.Round_number, m.Winning_user_id, t3.teamname AS Winner
+        FROM matches m
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t1 on t1.id = m.user_id_home
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t2 on t2.id = m.user_id_away
+        INNER JOIN (
+        SELECT u.id, u.team_id, t.teamname
+        FROM user u
+        INNER JOIN team t on t.id = u.team_id
+        ) t3 on t3.id = m.winning_user_id
+        WHERE m.Round_number = 2 AND Tournament_id = ${id};
     `;
         const connection = mysql.createConnection({
             host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
             user: 'gvoch3v86kyzmy53',
             password: 'hmrcywyic6i7uni5',
-            database: 'sp1hoq0zi7n09fn5'
+            database: 'sp1hoq0zi7n09fn5',
+            multipleStatements: true
         });
     
         connection.connect();
@@ -95,11 +132,9 @@ router.get('/view', function(req, res, next){
             if (error) throw error;
     
             res.render('../public/view', {
-                title: results[0].tname,
-                status: results[0].status,
-                capacity: results[0].capacity,
-                enrolled: results[0].playercount,
-                tournaments: results
+                tournaments: results[0],
+                round1: results[1],
+                round2: results[2]
             });
             
         });
