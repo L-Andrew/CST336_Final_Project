@@ -1,6 +1,3 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-
 <style>
     .hidden {
         display: none;
@@ -8,6 +5,29 @@
 </style>
 
 <h1>{{title}}</h1>
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+        <div class="row">
+            <div class="col-auto">
+                <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button id="submit" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </div>
+            <div class="col-auto">
+                <div class="input-group mb-3 my-sm-0 mr-sm-2">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="statusFilter">Status</label>
+                    </div>
+                    <select class="custom-select" id="statusFilter">
+                        <option selected>All</option>
+                        <option value="Ended">Ended</option>
+                        <option value="Live">Live</option>
+                        <option value="Waiting for players">Waiting for players</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</nav>
 
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -19,12 +39,12 @@
                 <a class="btn btn-info" href="home/login">Admin Login</a>
             </th>
             <th>
-                <a class = "btn btn-create btn-success" data-toggle="modal" data-target="#createModal">Create Account</a>
+                <a class="btn btn-create btn-success" data-toggle="modal" data-target="#createModal">Create Account</a>
             </th>
         </tr>
     </thead>
     <tbody>
-{{#each tournaments}}
+        {{#each tournaments}}
         <tr>
             <td class="w-50">{{tname}}</td>
             <td class="w-25">{{playercount}}/{{capacity}}</td>
@@ -36,7 +56,7 @@
                 <a class="btn btn-primary" href="/join?id={{id}}">Join</a>
             </td>
         </tr>
-{{/each}}
+        {{/each}}
     </tbody>
 </table>
 
@@ -88,7 +108,7 @@
 
         $("#saveButton").on('click', function(e) {
             e.preventDefault();
-        
+
             $.ajax({
                 type: "POST",
                 url: "/home",

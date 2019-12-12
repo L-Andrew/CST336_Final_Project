@@ -75,7 +75,12 @@
     </div>
     <div class="form-group">
         <label for="category">Capacity</label>
-        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Capacity" value={{data.0.capacity}}>
+        {{#if data}}
+            <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" value={{data.0.capacity}} disabled>
+        {{else}}
+            <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" value="4. It's 4." disabled>
+            <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" value=4 hidden>
+        {{/if}}
         <div class="form-group">
             <label for="quote">Status</label>
         <div>
