@@ -70,42 +70,47 @@
 
 <h1>{{title}}</h1>
 <form>
-    <div class="form-group">
-        <label for="authorId">Tournament ID</label>
-        <input type="text" class="form-control" id="authorId" aria-describedby="authorIdHelp" placeholder="Enter Tournament id" value={{data.id}}>
-        <input type="hidden" id="quoteId" value="{{data.id}}" />
-        <small id="authorIdHelp" class="form-text text-muted">Can be empty</small>
-    </div>
+    {{#if data}}
+        <div class="form-group">
+            <label for="authorId">Tournament ID</label>
+            <input type="text" class="form-control" id="authorId" aria-describedby="authorIdHelp" value={{data.0.id}} disabled>
+        </div>
+    {{/if}}
     <div class="form-group">
         <label for="quote">Tournament name</label>
-        <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Tournament name">{{data.tname}}</textarea>
+        <textarea class="form-control" id="quote" aria-describedby="quoteHelp" placeholder="Enter Tournament name">{{data.0.tname}}</textarea>
     </div>
     <div class="form-group">
         <label for="category">Capacity</label>
-        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Capacity" value={{data.capacity}}>
-    <div class="form-group">
-        <label for="quote">Status</label>
- <div><select id="status">
-  <option value="Waiting for players">Waiting for players</option>
-  <option value="Ended">Ended</option>
-  <option value="Live">Live</option>
-  <div>
-</select> </div>    </div>
+        <input type="text" class="form-control" id="category" aria-describedby="categoryHelp" placeholder="Enter Capacity" value={{data.0.capacity}}>
+        <div class="form-group">
+            <label for="quote">Status</label>
+        <div>
+            <select id="status">
+                {{#if data}}
+                    <option value="{{data.0.status}}">{{data.0.status}}</option>
+                {{/if}}
+                <option value="Waiting for players">Waiting for players</option>
+                <option value="Ended">Ended</option>
+                <option value="Live">Live</option>
+            </select>
+        </div>
+    </div>
 
 
-{{#if round1}}
-    <main id="tournament">
-        <ul class="round round-1">
-            {{#each round1}}
-            <li class="spacer">&nbsp;</li>
-            <li class="game game-top">{{Team1_name}}</li>
-            <li class="game game-spacer">&nbsp;</li>
-            <li class="game game-bottom">{{Team2_name}}</li>
-            {{/each}}
-            <li class="spacer">&nbsp;</li>
-        </ul>
-        <ul class="round round-2">
-            {{#if round2}}
+    {{#if round1}}
+        <main id="tournament">
+            <ul class="round round-1">
+                {{#each round1}}
+                <li class="spacer">&nbsp;</li>
+                <li class="game game-top">{{Team1_name}}</li>
+                <li class="game game-spacer">&nbsp;</li>
+                <li class="game game-bottom">{{Team2_name}}</li>
+                {{/each}}
+                <li class="spacer">&nbsp;</li>
+            </ul>
+            <ul class="round round-2">
+                {{#if round2}}
                 <li class="spacer">&nbsp;</li>
                 <li class="game game-top">
                     <span id="round1Aid" hidden>{{round1.0.id}}</span>
@@ -124,7 +129,7 @@
                         <option value={{round1.1.User2_name}}>{{round1.1.Team2_name}}</option>
                     </select>
                 </li>
-            {{else}}
+                {{else}}
                 <li class="spacer">&nbsp;</li>
                 <li class="game game-top">
                     <span id="round1Aid" hidden>{{round1.0.id}}</span>
@@ -143,14 +148,14 @@
                         <option value={{round1.1.User2_name}}>{{round1.1.Team2_name}}</option>
                     </select>
                 </li>
-            {{/if}}
-            <li class="spacer">&nbsp;</li>
-        </ul>
-        <ul class="round round-3">
-            <li class="spacer">&nbsp;</li>
-            <li class="game game-top">
-                <span id="round2id" hidden>{{round2.0.id}}</span>
-                <select id="round2Winner" class="round2Winners">
+                {{/if}}
+                <li class="spacer">&nbsp;</li>
+            </ul>
+            <ul class="round round-3">
+                <li class="spacer">&nbsp;</li>
+                <li class="game game-top">
+                    <span id="round2id" hidden>{{round2.0.id}}</span>
+                    <select id="round2Winner" class="round2Winners">
                     {{#if round2}}
                         <option value={{round2.0.Winning_user_id}}>{{round2.0.Winner}}</option>
                         <option id="round2WinnerA" value={{round2.0.User1_name}}>{{round2.0.Team1_name}}</option>
@@ -161,11 +166,11 @@
                         <option id="round2WinnerB"></option>
                     {{/if}}
                 </select>
-            </li>
-            <li class="spacer">&nbsp;</li>
-        </ul>
-    </main>
-{{/if}}
+                </li>
+                <li class="spacer">&nbsp;</li>
+            </ul>
+        </main>
+    {{/if}}
 
     <div class="form-group">
         <button id="saveButton" class="btn btn-primary">Save</button>
@@ -173,7 +178,7 @@
     </div>
     <div class="form-group">
         <input id="id" type="text" class="form-control" aria-describedby="idHelp" disabled>
-        <small id="idHelp" class="form-text text-muted">You'll get this back after new one is created.</small>
+        <small id="idHelp" class="form-text text-muted">Your Tournament ID</small>
     </div>
 </form>
 
@@ -192,13 +197,13 @@
                 contentType: "application/json",
                 data: JSON.stringify({
                     "id": $("#authorId").val(),
-                    "edit":$("#quoteId").val(),
                     "tname": $("#quote").val(),
                     "capacity": $("#category").val(),
-                    "status":$("#status option:selected" ).val(),
-                    "playercount":0
+                    "status": $("#status option:selected").val(),
+                    "playercount": 0
                 }),
                 success: function(data, status) {
+                    console.log(data);
                     $("#id").val(data.id);
                     window.location.href = "/admin";
                 },

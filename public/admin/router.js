@@ -50,8 +50,6 @@ router.get('/edit', function(req, res, next) {
     const id = req.query.id;
 
     if (id) {
-        // TODO: Lookup the data and provide results to the view 
-        // to show an existing quote
 
         const sql = `
         SELECT * FROM tournament WHERE id=?;
@@ -106,6 +104,7 @@ router.get('/edit', function(req, res, next) {
         connection.query(sql, [id,id,id],
             (error, results, fields) => {
                 if (error) throw error;
+                console.log(results[0]);
 
                 res.render('../public/admin/edit', {
                     title: 'Edit Tournament',
@@ -120,14 +119,14 @@ router.get('/edit', function(req, res, next) {
     }
     else {
         res.render('../public/admin/edit', {
-            title: 'Add Tournament',
-            data: {}
+            title: 'Add Tournament'
         });
     }
 
 });
 
 router.post('/edit', function(req, res, next) {
+    console.log(req.body);
 
     const connection = mysql.createConnection({
         host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
@@ -138,9 +137,9 @@ router.post('/edit', function(req, res, next) {
 
     connection.connect();
 
-    if (req.body.edit) {
+    if (req.body.id) {
         connection.query(
-            'UPDATE tournament SET id = ?, tname = ?, capacity = ?,status=? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity, req.body.status, req.body.id, ], // assuming POST
+            'UPDATE tournament SET id = ?, tname = ?, capacity = ?, status=? WHERE id = ?', [req.body.id, req.body.tname, req.body.capacity, req.body.status, req.body.id], // assuming POST
             (error, results, fields) => {
                 if (error) throw error;
                 res.json({
