@@ -175,7 +175,7 @@ router.get('/view', function(req, res, next) {
 
 router.get('/login', function(req, res, next) {
     res.render('../public/login', {
-        title: 'Login'
+        title: 'Admin Login'
     })
 })
 
