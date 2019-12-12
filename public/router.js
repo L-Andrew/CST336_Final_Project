@@ -206,7 +206,6 @@ router.post('/login', function(req, res, next) {
         connection.query(sql, (error, results, fields) => {
             if (error) throw error;
 
-            console.log("results:", results)
 
             if (results != '') {
                 successful = true;
@@ -266,7 +265,6 @@ router.get('/join', function(req, res, next) {
         connection.query(sql, (error, results, fields) => {
             if (error) throw error;
 
-            console.log("results:", results)
 
             res.render('../public/join', {
                 title: 'Join Tournament',
