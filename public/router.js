@@ -306,15 +306,7 @@ router.post('/join', function(req, res, next) {
         });
 
 
-    connection.query(
-        'SELECT playercount FROM tournament WHERE tournament.id=?', [id], (error, results, fields) => {
-            if (error) throw error;
 
-
-
-            playercount = results[0].playercount;
-            console.log("playercount");
-        });
 
     function get_info(callback) {
         connection.query(
@@ -329,6 +321,13 @@ router.post('/join', function(req, res, next) {
 
     get_info(function(result) {
         if (result.length != 4) {
+            connection.query(
+        
+                'UPDATE tournament SET playercount=playercount+1 WHERE tournament.id=?', [id], (error, results, fields) => {
+                    if (error) throw error;
+        
+                });
+                
             return;
         }
         playersArray = result;
@@ -345,7 +344,7 @@ router.post('/join', function(req, res, next) {
         playersArray.splice(rndIndex, 1);
 
         connection.query(
-            'INSERT INTO matches(matchDate, user_id_home, user_id_away,user__home_score,user__away_score,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)', ["jetztaberFürMathis", random1.id, random2.id, 0, 0, "live", id, 1], // assuming POST
+            'INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?,)', ["Time", random1.id, random2.id, "live", id, 1], // assuming POST
             (error, results, fields) => {
                 if (error) {
                     console.log(error);
@@ -364,7 +363,7 @@ router.post('/join', function(req, res, next) {
         console.log(random2.id);
         playersArray.splice(rndIndex, 1);
         connection.query(
-            'INSERT INTO matches(matchDate, user_id_home, user_id_away,user__home_score,user__away_score,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)', ["jetztaberFürMathis", random1.id, random2.id, 0, 0, "live", id, 1], // assuming POST
+            'INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?)', ["time", random1.id, random2.id,"live", id, 1], // assuming POST
             (error, results, fields) => {
                 if (error) {
                     console.log(error);
