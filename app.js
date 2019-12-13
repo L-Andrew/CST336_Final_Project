@@ -4,6 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require("express-session");
+var MySQLStore = require('express-mysql-session')(session);
+
+var options = {
+  host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+  port: 3306,
+  user: 'gvoch3v86kyzmy53',
+  password: 'hmrcywyic6i7uni5',
+  database: 'sp1hoq0zi7n09fn5'
+};
+
+var sessionStore = new MySQLStore(options);
 
 var lab10Router = require('./public/admin/router');
 
@@ -12,10 +23,12 @@ var homeRouter = require('./public/router');
 var app = express();
 
 app.use(session({
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true
-}))
+  key: 'session_cookieasdfasdf_name',
+  secret: 'keyboardafdsartwh435465 cat',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
