@@ -18,20 +18,18 @@ SELECT * FROM tournament;
 
     connection.connect();
 
-   connection.query('SELECT COUNT(*) FROM tournament'
-    ,(error, results, fields) => {
+    connection.query('SELECT COUNT(*) FROM tournament', (error, results, fields) => {
         if (error) throw error;
 
 
-      console.log(results);
+        console.log(results);
     });
 
-    connection.query('SELECT AVG(playercount) FROM tournament'
-    ,(error, results, fields) => {
+    connection.query('SELECT AVG(playercount) FROM tournament', (error, results, fields) => {
         if (error) throw error;
 
 
-      console.log(results);
+        console.log(results);
     });
     connection.query(sql, (error, results, fields) => {
         if (error) throw error;
@@ -333,17 +331,38 @@ router.post('/join', function(req, res, next) {
     }
 
     get_info(function(result) {
-        if (result.length < 5) {
-            connection.query(
-        
-                'UPDATE tournament SET playercount=(SELECT COUNT(*) FROM user WHERE tournament_id = ?) WHERE tournament.id=?', [id,id], (error, results, fields) => {
-                    if (error) throw error;
-        
-                });
-                
+        connection.query(
+
+            'UPDATE tournament SET playercount=(SELECT COUNT(*) FROM user WHERE tournament_id = ?) WHERE tournament.id=?', [id, id], (error, results, fields) => {
+                if (error) throw error;
+
+            });
+
+        if (result.length != 4) {
             return;
         }
         playersArray = result;
+
+        // function shuffle(array) {
+        //     array.sort(() => Math.random() - 0.5);
+        // }
+
+        // shuffle(playersArray);
+        // var sql = "INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?,)"
+
+        // for (var i = 0; i < 4; i += 2) {
+
+        //     connection.query(
+        //         sql, ["Time", playersArray[i].id, playersArray[i + 1].id, "live", id, 1],
+        //         (error, results, fields) => {
+        //             console.log(sql)
+        //             if (error) {
+        //                 console.log(error);
+        //             }
+
+        //         });
+
+        // }
 
         console.log(playersArray);
         var rndIndex = Math.floor(Math.random() * playersArray.length);
@@ -406,20 +425,20 @@ router.post('/search', function(req, res, next) {
         password: 'hmrcywyic6i7uni5',
         database: 'sp1hoq0zi7n09fn5'
     });
-    
+
     var where = "";
     var k1 = "";
     var k2 = "";
     var s1 = "";
     var s2 = "";
-    
+
     if (req.body.keyword.length) {
         where = "WHERE"
         var k = `tname LIKE "%${req.body.keyword}%" OR firstName LIKE "%${req.body.keyword}%" OR lastName LIKE "%${req.body.keyword}%"`
         k1 = `(${k}` + ` OR t.teamname LIKE "%${req.body.keyword}%")`
         k2 = `AND (${k})`
     }
-    
+
     if (req.body.statusFilter.length) {
         s2 += "AND ";
         if (where.length) {
@@ -429,7 +448,7 @@ router.post('/search', function(req, res, next) {
         s1 += "status LIKE '" + req.body.statusFilter + "'";
         s2 += "status LIKE '" + req.body.statusFilter + "'";
     }
-    
+
     var sql = `
     SELECT tournament.id, tname, capacity, status, playercount
     FROM tournament 
@@ -446,16 +465,16 @@ router.post('/search', function(req, res, next) {
 
     if (sql.length) {
         connection.connect();
-        
+
         connection.query(sql, (error, results, fields) => {
             if (error) throw error;
             console.log(results)
             res.json({
                 results: results,
             });
-    
+
         });
-    
+
         connection.end();
     }
 
