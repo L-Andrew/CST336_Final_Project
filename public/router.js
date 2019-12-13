@@ -336,7 +336,7 @@ router.post('/join', function(req, res, next) {
         if (result.length != 4) {
             connection.query(
         
-                'UPDATE tournament SET playercount=playercount+1 WHERE tournament.id=?', [id], (error, results, fields) => {
+                'UPDATE tournament SET playercount=(SELECT COUNT(*) FROM user WHERE tournament_id = ?) WHERE tournament.id=?', [id,id], (error, results, fields) => {
                     if (error) throw error;
         
                 });
