@@ -37,7 +37,7 @@
             </th>
         </tr>
     </thead>
-    <tbody id="tbody">
+    <tbody>
         {{#each tournaments}}
         <tr>
             <td class="w-50">{{tname}}</td>
@@ -129,6 +129,8 @@
 
         $("#search").on('click', function(e) {
             e.preventDefault();
+            // $("#resultTable tbody tr").remove();
+            $("#resultTable tbody").empty();
 
             $.ajax({
                 type: "POST",
@@ -140,11 +142,8 @@
                     "statusFilter": $("#statusFilter").val()
                 }),
                 success: function(data, status) {
-                    $("#tbody").remove();
-                    console.log(data)
                     $.each(data.results, function(index, obj) {
-                        console.log(obj)
-                        $('#resultTable tr:last').after(`
+                        $('#resultTable tbody').append(`
                             <tr>
                             <td class="w-50">${obj.tname}</td>
                             <td class="w-25">${obj.playercount}/${obj.capacity}</td>
