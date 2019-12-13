@@ -18,6 +18,21 @@ SELECT * FROM tournament;
 
     connection.connect();
 
+   connection.query('SELECT COUNT(*) FROM tournament'
+    ,(error, results, fields) => {
+        if (error) throw error;
+
+
+      console.log(results);
+    });
+
+    connection.query('SELECT AVG(playercount) FROM tournament'
+    ,(error, results, fields) => {
+        if (error) throw error;
+
+
+      console.log(results);
+    });
     connection.query(sql, (error, results, fields) => {
         if (error) throw error;
 

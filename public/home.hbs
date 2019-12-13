@@ -22,6 +22,7 @@
         <button id="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 </nav>
+                <a class="btn btn-info" id="report">Create Reports</a>
 
 <table class="table table-striped" id="resultTable">
     <thead class="thead-dark">
@@ -94,7 +95,10 @@
 
 <script>
     $(document).ready(function() {
+        $("#report").on('click', function(e) {
 
+
+        });
         $(".btn-create").on('click', function(e) {
             e.preventDefault();
             $('#createModal').modal('toggle');
