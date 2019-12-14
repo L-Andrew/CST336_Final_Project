@@ -48,7 +48,7 @@
                 <a class="btn btn-secondary" href="/view?id={{id}}">View</a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/join?id={{id}}D">Join</a>
+                <a class="btn btn-primary" href="/join?id={{id}}">Join</a>
             </td>
         </tr>
         {{/each}}
@@ -186,10 +186,10 @@
                             <td class="w-25 playercountcapacity">${obj.playercount}/${obj.capacity}</td>
                             <td class="w-25 status">${obj.status}</td>
                             <td>
-                                <button class="btn btn-secondary" href="/view?id=${obj.id}">View</button>
+                                <a class="btn btn-secondary" href="/view?id=${obj.id}">View</a>
                             </td>
                             <td>
-                                <button class="btn btn-primary" href="/join?id=${obj.id}">Join</button>
+                                <a class="btn btn-primary" href="/join?id=${obj.id}">Join</a>
                             </td>
                             </tr>
                         `);
