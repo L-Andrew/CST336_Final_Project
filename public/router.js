@@ -16,21 +16,6 @@ SELECT * FROM tournament;
         database: 'sp1hoq0zi7n09fn5'
     });
 
-    connection.connect();
-
-    connection.query('SELECT COUNT(*) FROM tournament', (error, results, fields) => {
-        if (error) throw error;
-
-
-        console.log(results);
-    });
-
-    connection.query('SELECT AVG(playercount) FROM tournament', (error, results, fields) => {
-        if (error) throw error;
-
-
-        console.log(results);
-    });
     connection.query(sql, (error, results, fields) => {
         if (error) throw error;
 
@@ -42,6 +27,40 @@ SELECT * FROM tournament;
     });
 
     connection.end();
+
+
+})
+
+router.post('/getReports', function(req, res, next) {
+
+    const username = req.body.username;
+    const password = req.body.password;
+    const first = req.body.first;
+    const last = req.body.last;
+
+    const connection = mysql.createConnection({
+        host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user: 'gvoch3v86kyzmy53',
+        password: 'hmrcywyic6i7uni5',
+        database: 'sp1hoq0zi7n09fn5',
+        multipleStatements: true
+    });
+
+    connection.connect();
+
+    connection.query(`
+    SELECT COUNT(*) AS c, teamname FROM (SELECT u.id, u.team_id, t.teamname
+    FROM user u
+    INNER JOIN team t on t.id = u.team_id) t 
+    GROUP BY teamname ORDER BY c DESC;
+    `, (error, results, fields) => {
+
+        console.log(results[0]);
+        if (error) throw error;
+        res.json({
+            largestTeam: results[0]
+        });
+    });
 
 
 })
@@ -399,38 +418,39 @@ router.post('/join', function(req, res, next) {
 
 
 router.post('/search', function(req, res, next) {
+    if (req.body.keyword.length || req.body.statusFilter.length) {
 
-    const connection = mysql.createConnection({
-        host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        user: 'gvoch3v86kyzmy53',
-        password: 'hmrcywyic6i7uni5',
-        database: 'sp1hoq0zi7n09fn5'
-    });
+        const connection = mysql.createConnection({
+            host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+            user: 'gvoch3v86kyzmy53',
+            password: 'hmrcywyic6i7uni5',
+            database: 'sp1hoq0zi7n09fn5'
+        });
 
-    var where = "";
-    var k1 = "";
-    var k2 = "";
-    var s1 = "";
-    var s2 = "";
+        var where = "";
+        var k1 = "";
+        var k2 = "";
+        var s1 = "";
+        var s2 = "";
 
-    if (req.body.keyword.length) {
-        where = "WHERE"
-        var k = `tname LIKE "%${req.body.keyword}%" OR firstName LIKE "%${req.body.keyword}%" OR lastName LIKE "%${req.body.keyword}%"`
-        k1 = `(${k}` + ` OR t.teamname LIKE "%${req.body.keyword}%")`
-        k2 = `AND (${k})`
-    }
-
-    if (req.body.statusFilter.length) {
-        s2 += "AND ";
-        if (where.length) {
-            s1 += "AND "
+        if (req.body.keyword.length) {
+            where = "WHERE"
+            var k = `tname LIKE "%${req.body.keyword}%" OR firstName LIKE "%${req.body.keyword}%" OR lastName LIKE "%${req.body.keyword}%"`
+            k1 = `(tname LIKE "%${req.body.keyword}%" OR firstName LIKE "%${req.body.keyword}%" OR lastName LIKE "%${req.body.keyword}%" OR t.teamname LIKE "%${req.body.keyword}%")`
+            k2 = `tname LIKE "%${req.body.keyword}%"`
         }
-        where = "WHERE"
-        s1 += "status LIKE '" + req.body.statusFilter + "'";
-        s2 += "status LIKE '" + req.body.statusFilter + "'";
-    }
 
-    var sql = `
+        if (req.body.statusFilter.length) {
+            s2 += "AND ";
+            if (where.length) {
+                s1 += "AND "
+            }
+            where = "WHERE"
+            s1 += "status LIKE '" + req.body.statusFilter + "'";
+            s2 += "status LIKE '" + req.body.statusFilter + "'";
+        }
+
+        var sql = `
     SELECT tournament.id, tname, capacity, status, playercount
     FROM tournament 
     INNER JOIN user on tournament.id = user.tournament_id
@@ -439,26 +459,25 @@ router.post('/search', function(req, res, next) {
     UNION
     SELECT tournament.id, tname, capacity, status, playercount
     FROM tournament 
-    INNER JOIN user on tournament.id = user.tournament_id
-    WHERE team_id IS NULL ${k2} ${s2}
+    WHERE ${k2} ${s2}
     `;
-    console.log(sql)
+        console.log(sql)
 
-    if (sql.length) {
-        connection.connect();
+        if (sql.length) {
+            connection.connect();
 
-        connection.query(sql, (error, results, fields) => {
-            if (error) throw error;
-            console.log(results)
-            res.json({
-                results: results,
+            connection.query(sql, (error, results, fields) => {
+                if (error) throw error;
+                console.log(results)
+                res.json({
+                    results: results,
+                });
+
             });
 
-        });
-
-        connection.end();
+            connection.end();
+        }
     }
-
 });
 
 

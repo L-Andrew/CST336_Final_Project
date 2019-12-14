@@ -22,7 +22,7 @@
         <button id="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 </nav>
-<a class="btn btn-info" id="report">Create Reports</a>
+<a class="btn btn-info" id="report">Get Reports</a><span id="joinreports"></span>
 
 <table class="table table-striped" id="resultTable">
     <thead class="thead-dark">
@@ -48,11 +48,7 @@
                 <a class="btn btn-secondary" href="/view?id={{id}}">View</a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/join?id={{id}}
-                {{!--{{#if playercount==capacity}}--}}
-                {{!--    disable--}}
-                {{!--{{/if}}--}}
-                ">Join</a>
+                <a class="btn btn-primary" href="/join?id={{id}}">Join</a>
             </td>
         </tr>
         {{/each}}
@@ -100,21 +96,46 @@
 <script>
     $(document).ready(function() {
 
-        $(".playercountcapacity").each(function() {
-            if ($(this).text() === "4/4") {
-                $(this).closest('tr').find('td:last').prop('hidden', true);
-            }
-        });
-        
-        $(".status").each(function() {
-            if ($(this).text() === "Ended") {
-                $(this).closest('tr').find('td:last').prop('hidden', true);
-            }
-        });
-        
+        function hideFull() {
+            $(".playercountcapacity").each(function() {
+                if ($(this).text() === "4/4") {
+                    $(this).closest('tr').find('td:last').prop('hidden', true);
+                }
+            });
+
+            $(".status").each(function() {
+                if ($(this).text() === "Ended") {
+                    $(this).closest('tr').find('td:last').prop('hidden', true);
+                }
+            });
+        };
+        hideFull();
+
         $("#report").on('click', function(e) {
+            e.preventDefault();
 
-
+            $.ajax({
+                type: "POST",
+                url: "/home",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "first": $("#first").val(),
+                    "last": $("#last").val(),
+                    "username": $("#username").val(),
+                    "password": $("#password").val()
+                }),
+                success: function(data, status) {
+                    $('#message').html(result.message);
+                    $('#message').show();
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                },
+                complete: function(data, status) { //optional, used for debugging purposes
+                    //console.log(status);
+                }
+            });
         });
 
         $(".btn-create").on('click', function(e) {
@@ -168,17 +189,18 @@
                         $('#resultTable tbody').append(`
                             <tr>
                             <td class="w-50">${obj.tname}</td>
-                            <td class="w-25">${obj.playercount}/${obj.capacity}</td>
-                            <td class="w-25">${obj.status}</td>
+                            <td class="w-25 playercountcapacity">${obj.playercount}/${obj.capacity}</td>
+                            <td class="w-25 status">${obj.status}</td>
                             <td>
-                                <a class="btn btn-secondary" href="/view?id=${obj.id}">View</a>
+                                <button class="btn btn-secondary" href="/view?id=${obj.id}">View</button>
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="/join?id=${obj.id}">Join</a>
+                                <button class="btn btn-primary" href="/join?id=${obj.id}">Join</button>
                             </td>
                             </tr>
                         `);
                     });
+                    hideFull();
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
