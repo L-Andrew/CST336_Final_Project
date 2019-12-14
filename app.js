@@ -64,8 +64,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// app.listen(process.env.PORT || 3000, process.env.IP, function(){
-//   console.log("Express Server is Running...");
-// });
+app.listen(process.env.PORT || 3000, process.env.IP, function(){
+  console.log("Express Server is Running...");
+});
 
 module.exports = app;
