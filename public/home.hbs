@@ -48,7 +48,11 @@
                 <a class="btn btn-secondary" href="/view?id={{id}}">View</a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/join?id={{id}}">Join</a>
+                <a class="btn btn-primary" href="/join?id={{id}}
+                {{!--{{#if playercount==capacity}}--}}
+                {{!--    disable--}}
+                {{!--{{/if}}--}}
+                ">Join</a>
             </td>
         </tr>
         {{/each}}

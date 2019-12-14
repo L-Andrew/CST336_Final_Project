@@ -265,12 +265,15 @@ router.get('/join', function(req, res, next) {
         SELECT *
         FROM tournament 
         WHERE tournament.id = ${id};
+        SELECT *
+        FROM team;
     `;
         const connection = mysql.createConnection({
             host: 'z1ntn1zv0f1qbh8u.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
             user: 'gvoch3v86kyzmy53',
             password: 'hmrcywyic6i7uni5',
-            database: 'sp1hoq0zi7n09fn5'
+            database: 'sp1hoq0zi7n09fn5',
+            multipleStatements: true
         });
 
         connection.connect();
@@ -281,7 +284,8 @@ router.get('/join', function(req, res, next) {
 
             res.render('../public/join', {
                 title: 'Join Tournament',
-                data: results
+                data: results[0],
+                teams: results[1]
             })
 
 
@@ -294,6 +298,7 @@ router.get('/join', function(req, res, next) {
 })
 
 router.post('/join', function(req, res, next) {
+    console.log(req.body);
 
     const username = req.body.username;
     const password = req.body.password;
@@ -310,14 +315,26 @@ router.post('/join', function(req, res, next) {
 
     connection.connect();
 
-    connection.query(
-        'UPDATE user SET tournament_id = ? WHERE username = ? && password = ?', [id, username, password], (error, results, fields) => {
+    if (req.body.newTeam.length == 0) {
+        var sql = `UPDATE user SET tournament_id = ${id}, team_id = ${req.body.team_Id} WHERE username = '${username}' && password = '${password}'`
+        connection.query(sql, (error, results, fields) => {
             if (error) throw error;
 
         });
+    }
+    else {
+        var newTeamId;
+        var insertSql = `INSERT INTO team(teamname) VALUES ('${req.body.newTeam}')`
+        connection.query(insertSql, (error, results, fields) => {
+            newTeamId = results.insertId
+            if (error) throw error;
+            var sql = `UPDATE user SET tournament_id = ${id}, team_id = ${newTeamId} WHERE username = '${username}' && password = '${password}'`
+            connection.query(sql, (error, results, fields) => {
+                if (error) throw error;
 
-
-
+            });
+        });
+    }
 
     function get_info(callback) {
         connection.query(
@@ -341,69 +358,34 @@ router.post('/join', function(req, res, next) {
         if (result.length != 4) {
             return;
         }
+        connection.query(
+
+            'UPDATE tournament SET status="Live" WHERE tournament.id=?', [id, id], (error, results, fields) => {
+                if (error) throw error;
+
+            });
         playersArray = result;
+        console.log(id);
 
-        // function shuffle(array) {
-        //     array.sort(() => Math.random() - 0.5);
-        // }
+        function shuffle(array) {
+            array.sort(() => Math.random() - 0.5);
+        }
 
-        // shuffle(playersArray);
-        // var sql = "INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?,)"
+        shuffle(playersArray);
+        var sql = "";
 
-        // for (var i = 0; i < 4; i += 2) {
+        for (var i = 0; i < 4; i += 2) {
+            sql = `INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( "Time", ${playersArray[i].id}, ${playersArray[i + 1].id}, "Live", ${id}, 1)`;
 
-        //     connection.query(
-        //         sql, ["Time", playersArray[i].id, playersArray[i + 1].id, "live", id, 1],
-        //         (error, results, fields) => {
-        //             console.log(sql)
-        //             if (error) {
-        //                 console.log(error);
-        //             }
-
-        //         });
-
-        // }
-
-        console.log(playersArray);
-        var rndIndex = Math.floor(Math.random() * playersArray.length);
-        var random1 = playersArray[rndIndex];
-        console.log(random1);
-        playersArray.splice(rndIndex, 1);
-        rndIndex = Math.floor(Math.random() * playersArray.length);
-
-        var random2 = playersArray[rndIndex];
-        console.log(random2.id);
-        playersArray.splice(rndIndex, 1);
-
-        connection.query(
-            'INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?,)', ["Time", random1.id, random2.id, "live", id, 1], // assuming POST
-            (error, results, fields) => {
+            connection.query(sql, (error, results, fields) => {
+                console.log(sql)
                 if (error) {
                     console.log(error);
                 }
 
             });
 
-        console.log(playersArray);
-        var rndIndex = Math.floor(Math.random() * playersArray.length);
-        var random1 = playersArray[rndIndex];
-        console.log(random1);
-        playersArray.splice(rndIndex, 1);
-        rndIndex = Math.floor(Math.random() * playersArray.length);
-
-        var random2 = playersArray[rndIndex];
-        console.log(random2.id);
-        playersArray.splice(rndIndex, 1);
-        connection.query(
-            'INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( ?, ?, ?, ?, ?, ?)', ["time", random1.id, random2.id,"live", id, 1], // assuming POST
-            (error, results, fields) => {
-                if (error) {
-                    console.log(error);
-                }
-
-            });
-
-
+        }
 
 
 

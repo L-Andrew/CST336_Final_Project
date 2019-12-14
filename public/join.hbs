@@ -11,12 +11,11 @@
 
 <h1>{{title}}</h1>
 
-<form>
-    {{#each data}}
+<form id="join_form">
     <div class="form-group">
-        
-        <h4>Tournament Name: {{tname}}</h4>
-        <input type="hidden" id="id" value="{{id}}" />
+
+        <h4>Tournament Name: {{data.0.tname}}</h4>
+        <input type="hidden" id="id" value="{{data.0.id}}" />
     </div>
     <div class="form-group">
         <label for="username">Username</label>
@@ -26,22 +25,58 @@
         <label for="password">Password</label>
         <input type="text" class="form-control" id="password" aria-describedby="passwordHelp" placeholder="Enter Your Password">
     </div>
-    {{/each}}
+    <div class="form-group">
+        <label for="exampleFormControlSelect2">Select a Team</label>
+        <select multiple class="form-control" id="teamId">
+        {{#each teams}}
+            <option value="{{id}}">{{teamname}}</option>
+        {{/each}}
+    </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">New Team</label>
+        <textarea class="form-control" id="newTeamName" rows="1"></textarea>
+    </div>
     <div class="form-group">
         <button id="joinButton" class="btn btn-primary">Join</button>
         <a class="btn btn-secondary" href="/home">Cancel</a>
     </div>
     <div id="message" class="alert alert-danger hidden m-2" role="alert">
-        This is a danger alert—check it out!
+        Error.
     </div>
-    
+
 </form>
 
 <script>
+    // function ValidateForm() {
+
+    //     var formInvalid = false;
+    //     $('#join_form input').each(function() {
+    //         if ($(this).val() === '') {
+    //             formInvalid = true;
+    //         }
+    //     });
+
+    //     if (formInvalid) {
+    //         alert('One or Two fields are empty. Please fill up all fields');
+    //         return false;
+    //     }
+    //     else {
+    //         return true;
+    //     }
+    // }
+
     $(document).ready(function() {
-        
+
         $("#joinButton").on('click', function(e) {
             e.preventDefault();
+            if (!$("#teamId").children("option:selected").val()) {
+                $("#newTeamName").val($("#username").val());
+            }
+            // if ($("#newTeamName").length > 0) {
+            //     console.log("unselect")
+            //     $("option:selected").prop("selected", false)
+            // }
             $.ajax({
                 type: "POST",
                 url: "/home/join",
@@ -50,14 +85,16 @@
                 data: JSON.stringify({
                     "username": $("#username").val(),
                     "password": $("#password").val(),
-                    "id": $('#id').val()
+                    "id": $('#id').val(),
+                    "team_Id": $("#teamId").children("option:selected").val(),
+                    "newTeam": $("#newTeamName").val()
                 }),
                 success: function(data, status) {
 
-                    if(data.successful){
+                    if (data.successful) {
                         window.location.href = "/home";
                     }
-                    else{
+                    else {
                         $('#message').show();
                     }
                 },
