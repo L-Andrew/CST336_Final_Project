@@ -355,38 +355,37 @@ router.post('/join', function(req, res, next) {
 
             });
 
-        if (result.length != 4) {
-            return;
+        if (result.length == 4) {
+            connection.query(
+
+                'UPDATE tournament SET status="Live" WHERE tournament.id=?', [id, id], (error, results, fields) => {
+                    if (error) throw error;
+
+                });
+            playersArray = result;
+            console.log(id);
+
+            function shuffle(array) {
+                array.sort(() => Math.random() - 0.5);
+            }
+
+            shuffle(playersArray);
+            var sql = "";
+
+            for (var i = 0; i < 4; i += 2) {
+                sql = `INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( "Time", ${playersArray[i].id}, ${playersArray[i + 1].id}, "Live", ${id}, 1)`;
+
+                connection.query(sql, (error, results, fields) => {
+                    console.log(sql)
+                    if (error) {
+                        console.log(error);
+                    }
+
+                });
+
+            }
+
         }
-        connection.query(
-
-            'UPDATE tournament SET status="Live" WHERE tournament.id=?', [id, id], (error, results, fields) => {
-                if (error) throw error;
-
-            });
-        playersArray = result;
-        console.log(id);
-
-        function shuffle(array) {
-            array.sort(() => Math.random() - 0.5);
-        }
-
-        shuffle(playersArray);
-        var sql = "";
-
-        for (var i = 0; i < 4; i += 2) {
-            sql = `INSERT INTO matches(matchDate, user_id_home, user_id_away,status,tournament_id,round_number) VALUES ( "Time", ${playersArray[i].id}, ${playersArray[i + 1].id}, "Live", ${id}, 1)`;
-
-            connection.query(sql, (error, results, fields) => {
-                console.log(sql)
-                if (error) {
-                    console.log(error);
-                }
-
-            });
-
-        }
-
 
 
     });
