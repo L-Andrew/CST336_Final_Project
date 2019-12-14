@@ -53,7 +53,7 @@ router.post('/getReports', function(req, res, next) {
     FROM user u
     INNER JOIN team t on t.id = u.team_id) t 
     GROUP BY teamname ORDER BY c DESC;
-    SELECT COUNT(*) AS c, CONCAT(u.firstName, u.lastName) AS name, teamname
+    SELECT COUNT(*) AS c, CONCAT(u.firstName, " ", u.lastName) AS name, teamname
     FROM matches m
     LEFT JOIN user u on m.winning_user_id = u.id
     INNER JOIN team t on t.id = u.team_id
