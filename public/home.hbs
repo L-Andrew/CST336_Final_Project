@@ -48,7 +48,7 @@
                 <a class="btn btn-secondary" href="/view?id={{id}}">View</a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/join?id={{id}}">Join</a>
+                <a class="btn btn-primary" href="/join?id={{id}}D">Join</a>
             </td>
         </tr>
         {{/each}}
@@ -116,18 +116,12 @@
 
             $.ajax({
                 type: "POST",
-                url: "/home",
+                url: "/getReports",
                 dataType: "json",
                 contentType: "application/json",
-                data: JSON.stringify({
-                    "first": $("#first").val(),
-                    "last": $("#last").val(),
-                    "username": $("#username").val(),
-                    "password": $("#password").val()
-                }),
                 success: function(data, status) {
-                    $('#message').html(result.message);
-                    $('#message').show();
+                    console.log(data)
+                    $("#joinreports").text(`Largest team: ${data.largestTeam.teamname} (${data.largestTeam.c} players)  ////  User with most wins: [${data.userMostWins.teamname}]${data.userMostWins.name} (${data.userMostWins.c} Wins)  ////  Team with most wins: ${data.teamMostWins.teamname} (${data.teamMostWins.c} Wins)`);
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

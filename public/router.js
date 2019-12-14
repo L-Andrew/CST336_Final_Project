@@ -53,12 +53,26 @@ router.post('/getReports', function(req, res, next) {
     FROM user u
     INNER JOIN team t on t.id = u.team_id) t 
     GROUP BY teamname ORDER BY c DESC;
+    SELECT COUNT(*) AS c, CONCAT(u.firstName, u.lastName) AS name, teamname
+    FROM matches m
+    LEFT JOIN user u on m.winning_user_id = u.id
+    INNER JOIN team t on t.id = u.team_id
+    WHERE winning_user_id IS NOT NULL
+    GROUP BY m.winning_user_id ORDER BY c DESC;
+    SELECT COUNT(*) AS c, teamname
+    FROM matches m
+    LEFT JOIN user u on m.winning_user_id = u.id
+    INNER JOIN team t on t.id = u.team_id
+    WHERE winning_user_id IS NOT NULL
+    GROUP BY m.winning_user_id ORDER BY c DESC;
     `, (error, results, fields) => {
 
         console.log(results[0]);
         if (error) throw error;
         res.json({
-            largestTeam: results[0]
+            largestTeam: results[0][0],
+            userMostWins: results[1][0],
+            teamMostWins: results[2][0]
         });
     });
 
